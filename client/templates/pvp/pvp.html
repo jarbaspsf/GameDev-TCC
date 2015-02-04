@@ -1,0 +1,27 @@
+<template name='playerVsPlayer'>
+  <h4 class='header-center'>Wellcome to the Arena</h4>
+  <h5 class='header-center'>Ready to lose?</h5>
+
+
+  <button class='btn btn-primary btn-apply'>Apply for PVP</button>
+  <table class='table'>
+    <thead>
+      <tr>
+        <th style='width: 70%'>Name</th>
+        <th>Class</th>
+        <th>Lvl</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each pvpRooms}}
+        <tr>
+          <td>{{charName}}</td>
+          <td>{{charClass}}</td>
+          <td>{{lvl}}</td>
+          <td><button class='btn btn-danger'>Challenge!</button></td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</template>

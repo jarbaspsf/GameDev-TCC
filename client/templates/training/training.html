@@ -1,0 +1,88 @@
+<template name='training'>
+  <h4 class='header-center'>Wellcome to Training</h4>
+  <h5 class='header-center'>Where noobs turns into champions!</h5>
+
+  <div class='panel panel-default'>
+    <div class='panel-select-training'>
+      <div class='panel-body'>
+        <div id='in-training'>
+          <h3 class='header-center'>You are training now, Please come back in:</h3>
+          <div id='trainingTime'></div>
+        </div>
+        <div class='row' id='select-training'>
+          <div class='col-md-6'>
+            <div class='panel panel-info'>
+              <div class='panel-skill-points'>
+                <div class='panel-body'>
+                  <h5 class='header-center'><strong>Current Skils Points: </strong></h5>
+                  <h1 class='header-center'><strong>{{skillPoints}}</strong></h1>
+                  <br/>
+                  <button class='trainingButton btn btn-info btn-block'>Begin Training!</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class='col-md-6'>
+            <div class="input-group input-padded">
+              <input type="text" class="form-control input-stats" value="{{stats.maxHP}}">
+              <div class="input-group-btn dropup">
+                <button type="button" name='maxHP' class="btn-stats btn btn-default">Increase Max HP</button>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <!-- Dropdown menu links -->
+                  <li><a href="#">This will increase Max HP by 10</a></li>
+                </ul>
+              </div>
+            </div><!-- /input-group -->
+            <div class="input-group input-padded">
+              <input type="text" class="form-control input-stats" value="{{stats.str}}">
+              <div class="input-group-btn dropup">
+                <button type="button" name='str' class="btn-stats btn btn-default">Increase Strength</button>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <!-- Dropdown menu links -->
+                  <li><a href="#">This will increase Strength by 1</a></li>
+                </ul>
+              </div>
+            </div><!-- /input-group -->
+            <div class="input-group input-padded">
+              <input type="text" class="form-control input-stats" value="{{stats.def}}">
+              <div class="input-group-btn dropup">
+                <button type="button" name='def' class="btn-stats btn btn-default">Increase Defense</button>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <!-- Dropdown menu links -->
+                  <li><a href="#">This will increase Defense by 1</a></li>
+                </ul>
+              </div>
+            </div><!-- /input-group -->
+            <div class="input-group input-padded">
+              <input type="text" class="form-control input-stats" value="{{stats.spd}}">
+              <div class="input-group-btn dropup">
+                <button type="button" name='spd' class="btn-stats btn btn-default">Increase Speed</button>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <!-- Dropdown menu links -->
+                  <li><a href="#">This will increase Speed</a></li>
+                </ul>
+              </div>
+            </div><!-- /input-group -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

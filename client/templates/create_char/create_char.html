@@ -1,0 +1,91 @@
+<template name='createChar'>
+  <h3 class='header-center'>Wellcome summoner to GameDev</h3>
+  <h5 class='header-center'>Please select your main character, they are realy cool don't you think?</h5>
+  <div class='col-md-11 col-md-offset-1'>
+    <div class="row">
+      <div class='col-md-3'>
+        <div class='panel panel-danger'>
+          <div class='panel-heading'>
+            <h4 class='header-center'>Knight</h4>
+          </div>
+          <div class='panel-body'>
+            <img src='knight.png' width='200' heigth='200'/>
+            <h6 class='header-center'>"I'm a tank, your agurment is invalid"</h6>
+            <ul class='padded'>
+              <li>More HP</li>
+              <li>More Strength</li>
+              <li>More Defense</li>
+              <li>Can Equip Heavy Armor</li>
+              <li>Role: Tanker</li>
+            </ul>
+          </div>
+          <div class="panel-footer panel-danger">
+            <h5 class='header-center'>For you i have just two words: Heavy Armor</h5>
+            <button class="classChoice btn btn-danger btn-block">Choose Knight</button>
+          </div>
+        </div>
+      </div>
+
+      <div class='col-md-3 col-md-offset-1'>
+        <div class='panel panel-info'>
+          <div class='panel-heading'>
+            <h4 class='header-center'>Mage</h4>
+          </div>
+          <div class='panel-body'>
+            <img src='mage.png' width='200' heigth='200'/>
+            <h6 class='header-center'>"You shall not pass!"</h6>
+            <ul class='padded'>
+              <li>Less HP</li>
+              <li>Less Strength</li>
+              <li>Less Defense</li>
+              <li>Can Equip Robes</li>
+              <li>Role: DPS</li>
+            </ul>
+          </div>
+          <div class="panel-footer panel-info">
+            <h5 class='header-center'>Fireball because f*** you and everyone near you</h5>
+            <button class="classChoice btn btn-info btn-block">Choose Mage</button>
+          </div>
+        </div>
+      </div>
+
+      <div class='col-md-3 col-md-offset-1'>
+        <div class='panel panel-success'>
+          <div class='panel-heading'>
+            <h4 class='header-center'>Druid</h4>
+          </div>
+          <div class='panel-body'>
+            <img src='druid.png' width='200' heigth='200'/>
+            <h6 class='header-center'>"So... Heard you need some bud"</h6>
+            <ul class='padded'>
+              <li>Medium HP</li>
+              <li>Medium Strength</li>
+              <li>Medium Defense</li>
+              <li>Can Equip Light Armor</li>
+              <li>Role: Healer</li>
+            </ul>
+          </div>
+          <div class="panel-footer panel-success">
+            <h5 class='header-center'>4:20</h5>
+            <button class="classChoice btn btn-success btn-block">Choose Druid</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class='row'>
+    <h4 class='header-center'>Now choice your character name</h4>
+    <h5 class='header-center'>"The harderst thing ever"</h5>
+    <div class='col-md-4 col-md-offset-4'>
+      <form id='createCharForm'>
+        <div class="input-group">
+          <input type="text" name="charName" class="form-control" placeholder="Hard isn't?" required>
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="submit" form='createCharForm'>Create</button>
+          </span>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
