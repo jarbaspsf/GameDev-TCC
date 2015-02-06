@@ -1,0 +1,27 @@
+<template name='worldBoss'>
+  <h4 class='header-center'>Wellcome to the Arena</h4>
+  <h5 class='header-center'>Ready to lose?</h5>
+  <table class='table'>
+    <thead>
+      <tr>
+        <th style='width: 30%'>Name</th>
+        <th style='width: 20%'>Current HP</th>
+        <th>Time</th>
+        <th style='width: 30%'></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each worldBosses}}
+      <tr>
+        <td>{{name}}</td>
+        <td>{{currentHP}}</td>
+        <td id="{{_id}}">{{#if loading}}{{>spinner}}{{/if}}</td>
+        <td>
+          <button class='btn btn-danger btn-challenge {{_id}}' disabled>Challenge!</button>
+          <button class='btn btn-primary'>Top Damage</button>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</template>
