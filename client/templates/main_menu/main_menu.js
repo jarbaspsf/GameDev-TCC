@@ -1,18 +1,30 @@
 Template.mainMenu.rendered = function(){
-//  setInterval(activateActionBar, 500);
+  Session.set('currentTemplate', "wellcome");
+  initialize();
+}
+
+function initialize(){
+  userProfile = Meteor.user().profile;
+  if(userProfile.sta < 100)
+    $('#stBar').addClass('active');
+
+  if(userProfile.currentHP < userProfile.maxHP)
+    $('#hpBar').addClass('active');
 }
 
 Template.mainMenu.helpers({
-  teste : function(){
-    if(Session.get('currentMenu')){
-      return Session.get('currentMenu');
-    }else{
-      return Session.get('currentTemplate');
-    }
+  dynamicTemplate : function(){
+    return Session.get('currentTemplate');
   },
 
-  currentST: function(){
-    return Meteor.user().profile.sta;
+  charProfile: function(){
+    return Meteor.user().profile;
+  },
+
+  hpPercentage: function(){
+    currentHP = Meteor.user().profile.currentHP;
+    maxHP = Meteor.user().profile.maxHP;
+    return percentage = parseInt((currentHP * 100) / maxHP).toFixed();
   }
 })
 
@@ -33,16 +45,3 @@ Template.mainMenu.events({
 
 
 })
-
-function activateActionBar(){
-  $actionBar = $("#actionBar");
-  current = parseInt($actionBar.attr('aria-valuenow'));
-  if(current >= 100){
-    $("#actionBar").attr('aria-valuenow', 0);
-    $("#actionBar").css('width', 0+"%");
-  }else{
-    progress = current + 1;
-    $("#actionBar").attr('aria-valuenow', progress);
-    $("#actionBar").css('width', progress+"%");
-  }
-}

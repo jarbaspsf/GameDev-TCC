@@ -7,20 +7,45 @@
       <div class='panel-body'>
         <div id='in-training'>
           <h3 class='header-center'>You are training now, Please come back in:</h3>
-          <div id='trainingTime'></div>
+          <div id='trainingTime'>
+            <div class='row'>
+              <div class='col-md-3'>
+                <h3 class='header-center'>Days</h3>
+              </div>
+              <div class='col-md-3'>
+                <h3 class='header-center'>Hours</h3>
+              </div>
+              <div class='col-md-3'>
+                <h3 class='header-center'>Minutes</h3>
+              </div>
+              <div class='col-md-3'>
+                <h3 class='header-center'>Seconds</h3>
+              </div>
+            </div>
+
+            <div class='row'>
+              <div class='col-md-3'>
+                <h4 id='daysCountdown' class='header-center'>00</h4>
+              </div>
+              <div class='col-md-3'>
+                <h4 id='hoursCountdown' class='header-center'>00</h4>
+              </div>
+              <div class='col-md-3'>
+                <h4 id='minutesCountdown' class='header-center'>00</h4>
+              </div>
+              <div class='col-md-3'>
+                <h4 id='secondsCountdown' class='header-center'>00</h4>
+              </div>
+            </div>
+
+          </div>
         </div>
         <div class='row' id='select-training'>
           <div class='col-md-6'>
-            <div class='panel panel-info'>
-              <div class='panel-skill-points'>
-                <div class='panel-body'>
-                  <h5 class='header-center'><strong>Current Skils Points: </strong></h5>
-                  <h1 class='header-center'><strong>{{skillPoints}}</strong></h1>
-                  <br/>
-                  <button class='trainingButton btn btn-info btn-block'>Begin Training!</button>
-                </div>
-              </div>
-            </div>
+            <h5 class='header-center'><strong>Current Skils Points: </strong></h5>
+            <h1 class='header-center'><strong>{{skillPoints}}</strong></h1>
+            <br/>
+            <button class='trainingButton btn btn-info btn-block'>Begin Training!</button>
           </div>
 
           <div class='col-md-6'>

@@ -25,7 +25,7 @@ function deactivateActionButtons(){
 function enemyAtk(){
   $("#timeBarE").attr('aria-valuenow', 100);
   $("#timeBarE").css('width', "100%");
-  Meteor.call("updateBattleLog", Challenges.findOne(Session.get("enemyId")).name, 'enemy', null, Session.get("enemyId"), null, Session.get("battleRegId"), function(err, result){
+  Meteor.call("updateBattleLog", getChallenge().name, 'enemy', null, Session.get("enemyId"), null, Session.get("battleRegId"), function(err, result){
     if(err){
 
     }else{
@@ -46,7 +46,7 @@ function enemyAtk(){
 function activateActionBar(){
   $actionBar = $("#timeBar");
   current = parseInt($actionBar.attr('aria-valuenow'));
-  progress = current + 10 + Meteor.user().profile.spd;
+  progress = current + 5 + Meteor.user().profile.spd;
   $("#timeBar").attr('aria-valuenow', progress);
   $("#timeBar").css('width', progress+"%");
   if(parseInt($actionBar.attr('aria-valuenow')) >= parseInt($actionBar.attr('aria-valuemax'))){
@@ -59,7 +59,7 @@ function activateActionBar(){
     $("#timeBarE").attr('aria-valuenow', 0);
     $("#timeBarE").css('width', "0%");
   }else{
-    progress = current + 15;
+    progress = current + getChallenge().spd;
     $("#timeBarE").attr('aria-valuenow', progress);
     $("#timeBarE").css('width', progress+"%");
     if(parseInt($actionBar.attr('aria-valuenow')) >= parseInt($actionBar.attr('aria-valuemax'))){
@@ -74,7 +74,13 @@ Template.exploreChallenge.helpers({
   },
 
   challenge: function(){
-    return Challenges.findOne(Session.get("enemyId"));
+    return getChallenge();
+  },
+
+  hpPercentage: function(){
+    currentHP = Meteor.user().profile.currentHP;
+    maxHP = Meteor.user().profile.maxHP;
+    return percentage = parseInt((currentHP * 100) / maxHP).toFixed();
   }
 
 
@@ -89,8 +95,10 @@ Template.exploreChallenge.events({
       if(err){
 
       }else{
-        percentage = parseInt((result.enemyCurrentHP * 100) / result.enemyMaxHP);
-        $("#enemyHpBar").attr('aria-valuenow', result.enemyMaxHP);
+        currentHP = getChallenge().boss ? getChallenge().currentHP : result.enemyCurrentHP;
+        maxHP = getChallenge().boss ? getChallenge().maxHP : result.enemyMaxHP;
+        percentage = parseInt((currentHP * 100) / maxHP);
+        $("#enemyHpBar").attr('aria-valuenow', currentHP);
         $("#enemyHpBar").css('width', percentage+"%");
         $("#timeBar").attr('aria-valuenow', 0);
         $("#timeBar").css('width', "0%");
@@ -108,4 +116,8 @@ function addLog(log) {
   var txtArea = $("#textLog");
   txtArea.val( txtArea.val() + log+"\n");
   $('#textLog').scrollTop($('#textLog')[0].scrollHeight);
+}
+
+function getChallenge(){
+  return Challenges.findOne(Session.get("enemyId"));
 }

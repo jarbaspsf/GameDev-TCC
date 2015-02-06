@@ -34,7 +34,8 @@ Template.training.events({
     event.preventDefault();
     $("#select-training").hide();
     $("#in-training").show();
-    calculateTrainingTime(true);
+    if(Meteor.user().profile.lvl < 100)
+      calculateTrainingTime(true);
   },
 
   'click .btn-stats' : function(event){
@@ -68,8 +69,6 @@ function initCountdown(initDateTimeTraining, seconds){
   var millesecondsToAdd = seconds * 1000;
   var targetDateTime = initDateTimeTraining + millesecondsToAdd;
   var days, hours, minutes, seconds;
-
-  var countdown = document.getElementById("trainingTime");
   // update the tag with id "countdown" every 1 second
   TRAINING_GLOBAL = setInterval(function () {
     // find the amount of "seconds" between now and target
@@ -93,9 +92,17 @@ function initCountdown(initDateTimeTraining, seconds){
     }
 
     // format countdown string + set tag value
-    countdown.innerHTML = days + "d, " + hours + "h, "
-    + minutes + "m, " + seconds + "s";
+    $("#daysCountdown").text(formatTime(days));
+    $("#hoursCountdown").text(formatTime(hours));
+    $("#minutesCountdown").text(formatTime(minutes));
+    $("#secondsCountdown").text(formatTime(seconds));
 
   }, 1000);
 
+}
+
+function formatTime(unit){
+  if(unit.toString().length == 1)
+    return "0"+unit;
+  return unit;
 }

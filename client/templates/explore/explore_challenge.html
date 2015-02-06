@@ -8,7 +8,7 @@
           <h4 class='header-center'>{{charName}}</h4>
         </div>
         <div class="progress">
-          <div id='myHpBar' class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{currentHP}}" aria-valuemin="0" aria-valuemax="{{maxHP}}" style="width: 100%">
+          <div id='myHpBar' class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{currentHP}}" aria-valuemin="0" aria-valuemax="{{maxHP}}" style="width: {{hpPercentage}}%">
           </div>
         </div>
 
@@ -31,8 +31,6 @@
           <h4 class='header-center'>Actions</h4>
         </div>
         <button id='attack-btn' disabled class='btn btn-primary btn-lg btn-block'>Attack!</button>
-        <button id='defense-btn' disabled class='btn btn-lg btn-block'>Defend!</button>
-
       </div>
     </div>
     {{/with}}

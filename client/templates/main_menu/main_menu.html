@@ -3,23 +3,55 @@
   <div class='col-md-3'>
     <div class='panel panel-default'>
       <div class='panel-body'>
-        <div class='row'>
-          <div class='col-md-2'>
-            ST
+        <div class="thumbnail">
+          {{#with charProfile}}
+          <img src="{{charImgPath}}" width='200' height='200'>
+          <div class="caption">
+            <h4 class='header-center'>{{charName}}</h4>
           </div>
-          <div class='col-md-10'>
-            <div class="progress">
-              <div id='stBar' class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="{{currentST}}" aria-valuemin="0" aria-valuemax="100" style="width: {{currentST}}%">
-                {{currentST}}
+          <div class='row'>
+            <div class='col-md-2'>
+              ST
+            </div>
+            <div class='col-md-10'>
+              <div class="progress">
+                <div id='stBar' class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="{{sta}}" aria-valuemin="0" aria-valuemax="100" style="width: {{sta}}%">
+                  <span class='barInfo'>{{sta}}/100</span>
+                </div>
               </div>
             </div>
+
+            <div class='col-md-2'>
+              HP
+            </div>
+            <div class='col-md-10'>
+              <div class="progress">
+                <div id='hpBar' class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="{{currentHP}}" aria-valuemin="0" aria-valuemax="{{maxHP}}" style="width: {{hpPercentage}}%">
+                  <span class='barInfo'>{{currentHP}}/{{maxHP}}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class='col-md-2'>
+              LVL
+            </div>
+            <div class='col-md-10'>
+              <div class="progress">
+                <div id='lvlBar' class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{lvl}}" aria-valuemin="0" aria-valuemax="100" style="width: {{lvl}}%">
+                  <span class='barInfo'>{{lvl}}/100</span>
+                </div>
+              </div>
+            </div>
+
           </div>
+          {{/with}}
         </div>
 
         <hr/>
       </div>
 
       <ul class="list-group">
+        <a href="#" class="menuSelect list-group-item">Wellcome</a>
         <a href="#" class="menuSelect list-group-item">Training</a>
         <a href="#" class="menuSelect list-group-item">Explore</a>
         <a href="#" class="menuSelect list-group-item">World Boss</a>
@@ -36,8 +68,88 @@
   <div class='col-md-9'>
     <div class='panel panel-default'>
       <div class='panel-body'>
-        {{> Template.dynamic template=teste}}
+        {{> Template.dynamic template=dynamicTemplate}}
       </div>
     </div>
   </div>
+</template>
+
+<template name='wellcome'>
+  <h3 class='header-center'>Wellcome to GameDev</h3>
+  <hr/>
+  <p class='text-center'>This is a game about kill monsters and receive
+    absolutely nothing, so it's just for the joy</p>
+  <p class='text-center'>Let's see a brief tutorial with the features:</p>
+  <ul>
+    <li>
+      <b>ST, HP and LVL:</b><br/><br/>
+      <p>You'll notice the 3 bars bellow you character portrait, the <span style='color: green'>Green</span> it's
+      your stamina (ST for the short), the <span style='color: red'>Red</span> it's you current HP and the
+      <span style='color: orange'>Orange</span> one it's your level indicator.</p>
+      <p>Each 1 hour you will replenish: </p>
+        <ul>
+          <li>5 ST points</li>
+          <li>20 HP Points</li>
+        </ul>
+        <br/>
+        <p>To LVL UP you need to spent Skill points, please note that the current Max LVL cap is 100!</p>
+
+    </li>
+
+    <li>
+      <b>Training:</b><br/><br/>
+      <p>In this section you can spend skill points and train you character, the
+      amount of the time required for gain a skill point and level up is the current character lvl
+      X 1400 (in Seconds). So if your character is level 5 you'll need 7000 seconds (1 hour 56 minutes 40 seconds)
+      to lvl UP</p>
+
+      <p>Also you will need to spend skill points if you want to have a chance against the
+      world bosses!!! So with 1 point you can: </p>
+      <ul>
+        <li>Increase MAX HP in 10 points</li>
+        <li>Increase Strength, Defense, Speed for 1 point</li>
+        <li>Increase MAX mana for 5 points (beta)</li>
+      </ul>
+      <br/>
+    </li>
+
+    <li>
+      <b>Explore:</b><br/><br/>
+      <p>Here you can fight agains some challenges, they are kind of easy, mostly...</p>
+
+      <p>When you click in the challenge button a fight will occur (and you will lost 5 points of Stamina)
+      you will notice 3 bars on your character side: The <span style='color: red'>Red</span> one represents
+      your current HP, the <span style='color: blue'>Blue</span> one represents your current mana (beta) and the
+      <span style='color: orange'>Orange</span> one it's the Time Action Bar.</p>
+
+      <p>The TAB (Time Action Bar) will fill every second based on your char total Speed, when filled you can take
+        any of the two actions:</p>
+        <ul>
+          <li>Use a basic attack</li>
+          <li>Use Skills (beta)</li>
+        </ul>
+      <br/>
+
+      <p>Also, you can Run at anytime, just ckick on the run button (or refresh the page, or click in another menu),
+        but be advised, the stamina will be spent and there is no refund!</p>
+    </li>
+
+    <li>
+      <b>World Bosses:</b><br/><br/>
+      <p>Here you can fight agains some real challenges with every player!</p>
+
+      <p>When you click in the challenge button a fight will occur (and you will lost 15 points of Stamina)
+        This fight it's hard, so train your character! There is a ranking where you can see
+        who done more damage to the boss (beta)</p>
+
+      <p>Also the bosses are available only at determited time and only for 20 minutes per day, so pay attention!</p>
+      <p>The 3 top players that had done most damage to the boss will win ... nothing...</p>
+    </li>
+
+    <li>
+      <b>Player Vs Player:</b><br/><br/>
+      <p>Someone here said PvP? Hell yeah!, but its a future feature... so don't work.. yet =D</p>
+    </li>
+  </ul>
+
 </template>

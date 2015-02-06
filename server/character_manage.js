@@ -28,7 +28,7 @@ function createChar(charClass, charName){
         inTraining: false,
         initTimeTraining: 0,
         trainingTime: 0,
-        skp: 0
+        skp: 1
       }
     }
   });
@@ -75,22 +75,24 @@ function updateStats(type){
 
 function initTraining(){
 
+  if(Meteor.user().profile.lvl >= 100)
+    return false;
 
-    var trainingTime = Meteor.user().profile.lvl * 20;
-    var initDateTime = new Date().getTime();
+  var trainingTime = Meteor.user().profile.lvl * 1400;
+  var initDateTime = new Date().getTime();
 
-    Meteor.users.update(Meteor.userId(), {
-      $set: {
-          "profile.inTraining": true,
-          "profile.initTimeTraining": initDateTime,
-          "profile.trainingTime": trainingTime
-      }
-    });
-
-    data = {
-      seconds: trainingTime,
-      dateTime: initDateTime
+  Meteor.users.update(Meteor.userId(), {
+    $set: {
+        "profile.inTraining": true,
+        "profile.initTimeTraining": initDateTime,
+        "profile.trainingTime": trainingTime
     }
+  });
+
+  data = {
+    seconds: trainingTime,
+    dateTime: initDateTime
+  }
 
   return data;
 
@@ -144,21 +146,21 @@ function getInitialStatus(charClass){
 
   if(charClass == 'Knight'){
     initialStats.maxHP = 150;
-    initialStats.str = 10;
+    initialStats.str = 9;
     initialStats.def = 10;
-    initialStats.spd = 2;
+    initialStats.spd = 3;
     initialStats.mana = 50;
   }else if(charClass == 'Mage'){
-    initialStats.maxHP = 100;
+    initialStats.maxHP = 110;
     initialStats.str = 5;
-    initialStats.def = 5;
+    initialStats.def = 2;
     initialStats.spd = 5;
     initialStats.mana = 100;
-  }else if(charClass == 'Druid'){
+  }else if(charClass == 'Rogue'){
     initialStats.maxHP = 125;
     initialStats.str = 7;
-    initialStats.def = 7;
-    initialStats.spd = 3;
+    initialStats.def = 6;
+    initialStats.spd = 9;
     initialStats.mana = 75;
   }
 

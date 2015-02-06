@@ -1,3 +1,5 @@
+
+
 Template.login.events({
   "submit #loginForm": function(event){
     event.preventDefault();
@@ -45,4 +47,12 @@ Template.login.events({
       }
     });
   },
+
+  'click #doLogin': function(event){
+    event.preventDefault();
+    if(Meteor.user().profile.firstLogin)
+      Router.go("/newAcc");
+    else
+      Router.go("/main");
+  }
 });
