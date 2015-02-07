@@ -46,7 +46,7 @@ function enemyAtk(){
 function activateActionBar(){
   $actionBar = $("#timeBar");
   current = parseInt($actionBar.attr('aria-valuenow'));
-  progress = current + 5 + Meteor.user().profile.spd;
+  progress = Meteor.user().profile.spd;
   $("#timeBar").attr('aria-valuenow', progress);
   $("#timeBar").css('width', progress+"%");
   if(parseInt($actionBar.attr('aria-valuenow')) >= parseInt($actionBar.attr('aria-valuemax'))){

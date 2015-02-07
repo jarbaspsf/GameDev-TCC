@@ -12,6 +12,10 @@ Template.training.rendered = function(){
 
 }
 
+Template.training.destroyed = function(){
+  clearInterval(TRAINING_GLOBAL);
+}
+
 
 Template.training.helpers({
   stats: function(){
@@ -84,19 +88,17 @@ function initCountdown(initDateTimeTraining, seconds){
     minutes = parseInt(seconds_left / 60);
     seconds = parseInt(seconds_left % 60);
 
-    if(seconds <= 0 && minutes <= 0 && hours <= 0 && days <= 0){
+    if(seconds <= 0 && minutes <= 0 && hours <= 0 && days <= 0 && Meteor.user().profile.inTraining){
       Meteor.call("updateSkillPoints");
       clearInterval(TRAINING_GLOBAL);
       $("#select-training").show();
       $("#in-training").hide();
+    }else{
+      $("#daysCountdown").text(formatTime(days));
+      $("#hoursCountdown").text(formatTime(hours));
+      $("#minutesCountdown").text(formatTime(minutes));
+      $("#secondsCountdown").text(formatTime(seconds));
     }
-
-    // format countdown string + set tag value
-    $("#daysCountdown").text(formatTime(days));
-    $("#hoursCountdown").text(formatTime(hours));
-    $("#minutesCountdown").text(formatTime(minutes));
-    $("#secondsCountdown").text(formatTime(seconds));
-
   }, 1000);
 
 }

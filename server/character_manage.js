@@ -78,7 +78,7 @@ function initTraining(){
   if(Meteor.user().profile.lvl >= 100)
     return false;
 
-  var trainingTime = Meteor.user().profile.lvl * 1400;
+  var trainingTime = Meteor.user().profile.lvl * 20;
   var initDateTime = new Date().getTime();
 
   Meteor.users.update(Meteor.userId(), {
@@ -99,7 +99,17 @@ function initTraining(){
 }
 
 function updateSkillPoints(){
-  updateSkp = function(callback){
+
+
+  //test if was training
+  var user = Meteor.user();
+  var totalTrainingTime = user.profile.initTimeTraining + (user.profile.trainingTime * 1000);
+  currentDate = new Date();
+  currentDate.setSeconds(currentDate.getSeconds() + 30);
+
+  if(totalTrainingTime > currentDate.getTime()){
+    return "Is Still Training!";
+  }else{
     Meteor.users.update(Meteor.userId(), {
       $inc: {
         "profile.skp": 1,
@@ -111,24 +121,8 @@ function updateSkillPoints(){
         "profile.initTimeTraining": 0,
         "profile.trainingTime": 0
       }
-    }, function(err){
-      if(err){
-        callback(true);
-      }else{
-        callback(false);
-      }
     });
-  }
-
-  //test if was training
-  var user = Meteor.user();
-  var totalTrainingTime = user.profile.initTimeTraining + (user.profile.trainingTime * 1000);
-  var a = new Date().getTime();
-  if(!(totalTrainingTime >= new Date().getTime())){
-    return "Is Still Training!";
-  }else{
-    var updateSkilPoints = Meteor.wrapAsync(updateSkp);
-    return updateSkilPoints();
+    return true;
   }
 }
 
