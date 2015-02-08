@@ -59,34 +59,7 @@ function updateBattleLog(actionUser, type, skillId, enemyId, pvp, battleRegId){
   var damage, usesSkill, enemy, firstHit;
   var skill = Skills.findOne(skillId);
   enemy = Challenges.findOne(enemyId);
-
-  //normal atk
-  if(skill){
-    damage = ((Meteor.user().profile.str * skillBonus) * Math.floor((Math.random() * 2) + 1)).toFixed();
-    usesSkill = true;
-  }else if(type != 'enemy'){
-    damage = ((Meteor.user().profile.str * 1.1) * Math.floor((Math.random() * 2) + 1)).toFixed();
-    damage = damage - Math.floor((enemy.def * 1.2) / 2).toFixed();
-  }else{
-    damage = ((enemy.str * 1.2) * Math.floor((Math.random() * 2) + 1)).toFixed();
-    damage = damage - Math.floor((Meteor.user().profile.def * 1.1) / 2).toFixed();
-  }
-
-  if(damage < 0)
-    damage = 0;
-
-  var log;
-
-  if(usesSkill && skill.prop == 'heal'){
-    log = actionUser + " uses "+ skill.name +" and heals for: "+ damage + " HP";
-  }else if(usesSkill && skill.prop == 'dmg'){
-    log = actionUser + " uses "+ skill.name +" and hits for: "+ damage + " HP";
-  }else{
-    log = actionUser + " attacks and hits for: "+ damage + " HP";
-  }
-
-  var lastBattleLog;
-
+  
   if(enemy.boss){
     lastBattleLog  = BattleLogs.find({bossId: enemyId}, {sort : {date: -1}}).fetch()[0];
     //first hit on boss
@@ -102,6 +75,38 @@ function updateBattleLog(actionUser, type, skillId, enemyId, pvp, battleRegId){
   if(lastBattleLog && lastBattleLog.result == 'finished'){
     return lastBattleLog;
   }
+
+
+
+  //normal atk
+  if(skill){
+    damage = ((Meteor.user().profile.str * skill.dmgMod) * Math.floor((Math.random() * 2) + 1)).toFixed();
+    usesSkill = true;
+    updateMana(skill.manaCost);
+  }else if(type != 'enemy'){
+    damage = ((Meteor.user().profile.str * 1.1) * Math.floor((Math.random() * 2) + 1)).toFixed();
+    damage = damage - Math.floor((enemy.def * 1.2) / 2).toFixed();
+  }else{
+    damage = ((enemy.str * 1.2) * Math.floor((Math.random() * 2) + 1)).toFixed();
+    damage = damage - Math.floor((Meteor.user().profile.def * 1.1) / 2).toFixed();
+  }
+
+  if(damage < 0)
+    damage = 0;
+
+  var log;
+
+  if(usesSkill && skill.type == 'heal'){
+    log = actionUser + " uses "+ skill.name +" and heals for: "+ damage + " HP";
+  }else if(usesSkill && skill.type == 'dmg'){
+    log = actionUser + " uses "+ skill.name +" and hits for: "+ damage + " HP";
+  }else{
+    log = actionUser + " attacks and hits for: "+ damage + " HP";
+  }
+
+  var lastBattleLog;
+
+
 
   console.log(lastBattleLog);
 
@@ -175,6 +180,15 @@ function updateCharDmg(damage){
   Meteor.users.update(Meteor.userId(), {
     $inc: {
       "profile.currentHP": -(damage)
+    }
+  });
+}
+
+function updateMana(mana){
+
+  Meteor.users.update(Meteor.userId(), {
+    $inc: {
+      "profile.currentMana": -(mana)
     }
   });
 }

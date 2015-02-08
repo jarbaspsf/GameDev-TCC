@@ -33,6 +33,17 @@
             </div>
 
             <div class='col-md-2'>
+              Mana
+            </div>
+            <div class='col-md-10'>
+              <div class="progress">
+                <div id='manaBar' class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="{{currentMana}}" aria-valuemin="0" aria-valuemax="{{maxMana}}" style="width: {{manaPercentage}}%">
+                  <span class='barInfo'>{{currentMana}}/{{maxMana}}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class='col-md-2'>
               LVL
             </div>
             <div class='col-md-10'>
@@ -53,6 +64,8 @@
       <ul class="list-group">
         <a href="#" class="menuSelect list-group-item">Wellcome</a>
         <a href="#" class="menuSelect list-group-item">Training</a>
+        <a href="#" class="menuSelect list-group-item">Equipment and Items</a>
+        <a href="#" class="menuSelect list-group-item">Skills</a>
         <a href="#" class="menuSelect list-group-item">Explore</a>
         <a href="#" class="menuSelect list-group-item">World Boss</a>
         <a href="#" class="menuSelect list-group-item">Player Vs Player</a>
@@ -120,9 +133,9 @@
       <p>When you click in the challenge button a fight will occur (and you will lost 5 points of Stamina)
       you will notice 3 bars on your character side: The <span style='color: red'>Red</span> one represents
       your current HP, the <span style='color: blue'>Blue</span> one represents your current mana (beta) and the
-      <span style='color: orange'>Orange</span> one it's the Time Action Bar.</p>
+      <span style='color: orange'>Orange</span> one it's the Action Time Bar.</p>
 
-      <p>The TAB (Time Action Bar) will fill every second based on your char total Speed, when filled you can take
+      <p>The ATB (Action Time Bar) will fill every second based on your char total Speed, when filled you can take
         any of the two actions:</p>
         <ul>
           <li>Use a basic attack</li>

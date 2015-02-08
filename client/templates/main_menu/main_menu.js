@@ -10,6 +10,9 @@ function initialize(){
 
   if(userProfile.currentHP < userProfile.maxHP)
     $('#hpBar').addClass('active');
+
+  if(userProfile.currentMana < userProfile.maxMana)
+    $('#manaBar').addClass('active');
 }
 
 Template.mainMenu.helpers({
@@ -19,12 +22,6 @@ Template.mainMenu.helpers({
 
   charProfile: function(){
     return Meteor.user().profile;
-  },
-
-  hpPercentage: function(){
-    currentHP = Meteor.user().profile.currentHP;
-    maxHP = Meteor.user().profile.maxHP;
-    return percentage = parseInt((currentHP * 100) / maxHP).toFixed();
   }
 })
 

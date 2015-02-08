@@ -46,7 +46,7 @@ function enemyAtk(){
 function activateActionBar(){
   $actionBar = $("#timeBar");
   current = parseInt($actionBar.attr('aria-valuenow'));
-  progress = Meteor.user().profile.spd;
+  progress = current + (Meteor.user().profile.spd * 1.25);
   $("#timeBar").attr('aria-valuenow', progress);
   $("#timeBar").css('width', progress+"%");
   if(parseInt($actionBar.attr('aria-valuenow')) >= parseInt($actionBar.attr('aria-valuemax'))){
@@ -75,15 +75,7 @@ Template.exploreChallenge.helpers({
 
   challenge: function(){
     return getChallenge();
-  },
-
-  hpPercentage: function(){
-    currentHP = Meteor.user().profile.currentHP;
-    maxHP = Meteor.user().profile.maxHP;
-    return percentage = parseInt((currentHP * 100) / maxHP).toFixed();
   }
-
-
 });
 
 
@@ -109,6 +101,32 @@ Template.exploreChallenge.events({
       }
 
     })
+  },
+
+  "click .useSkill" : function(event){
+    event.preventDefault();
+    if(Meteor.user().profile.currentMana < this.manaCost){
+      addLog("You don't have enough mana!");
+    }else{
+      Meteor.call("updateBattleLog", Meteor.user().profile.charName, 'user', this._id, Session.get("enemyId"), null, Session.get("battleRegId"), function(err, result){
+        if(err){
+
+        }else{
+          currentHP = getChallenge().boss ? getChallenge().currentHP : result.enemyCurrentHP;
+          maxHP = getChallenge().boss ? getChallenge().maxHP : result.enemyMaxHP;
+          percentage = parseInt((currentHP * 100) / maxHP);
+          $("#enemyHpBar").attr('aria-valuenow', currentHP);
+          $("#enemyHpBar").css('width', percentage+"%");
+          $("#timeBar").attr('aria-valuenow', 0);
+          $("#timeBar").css('width', "0%");
+          addLog(result.log);
+          if(result.result.state == 'finished'){
+            clearInterval(GLOBAL_CHALLENGE);
+          }
+        }
+
+      })
+    }
   }
 });
 

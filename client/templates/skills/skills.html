@@ -1,0 +1,52 @@
+<template name='skills'>
+  <h4 class='header-center'>Skills</h4>
+  <h5 class='header-center'>Slice and Dice!</h5>
+
+  <div class='row'>
+    <div class='col-xs-4 col-md-4'>
+      <div class='panel panel-primary'>
+        <div class='panel-heading'>
+          <h4 class='header-center'>Active Skills - x/4</h4>
+        </div>
+        <div class='panel-body'>
+          <div class='row'>
+            {{#each skills}}
+              <div class='col-xs-6 col-md-6'>
+                <div class="thumbnail inventory">
+                  <img src="{{iconPath}}" title="{{name}}" class='inventoryItem'>
+                </div>
+              </div>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class='col-xs-6 col-md-6'>
+      <div class='panel panel-warning'>
+        <div class='panel-heading'>
+          <h4 class='header-center'>Invetory Skills - x/16</h4>
+        </div>
+        <div class='panel-body'>
+          <div class='row'>
+            {{#each allSkills}}
+            <div class='col-xs-6 col-md-3'>
+              <a href="#" class="thumbnail inventory skillToEquip">
+                <img src="{{iconPath}}" title="{{name}}" class='inventoryItem'>
+              </a>
+            </div>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <div class='col-xs-2 col-md-2'>
+        <button id='equipSkill' class='btn btn-primary btn-lg btn-block'>Equip</button>
+        <hr/>
+        <button class='btn btn-danger btn-lg btn-block'>Forget</button>
+      </div>
+  </div>
+
+</template>

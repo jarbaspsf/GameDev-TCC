@@ -1,0 +1,9 @@
+.inventory {
+  height: 70px;
+  width: 70px;
+}
+
+.inventoryItem {
+  height: 60px;
+  width: inherit;
+}

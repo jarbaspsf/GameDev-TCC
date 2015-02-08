@@ -15,3 +15,7 @@ Meteor.publish('battleRegs', function(limit) {
 Meteor.publish('PVPRooms', function(limit) {
   return PVPRooms.find({}, {userId: {$ne: this.userId}});
 });
+
+Meteor.publish('skills', function(limit) {
+  return Skills.find();
+});

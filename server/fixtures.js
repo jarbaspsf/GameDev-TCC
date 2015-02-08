@@ -143,3 +143,146 @@ if(!Challenges.find().count()){
   Challenges.insert(wBoss);
 
 }
+
+if(!Skills.find().count()){
+
+  var skill = {
+    name: "Power Strike",
+    description: "Attacks the enemy with a powerfull strike",
+    dmgMod: 1.6,
+    manaCost: 8,
+    stats: 'str',
+    type: 'dmg',
+    target: 'enemy',
+    iconPath: '/skills/knight/powerStrike.png',
+    reqLvl: 1,
+    class: "Knight"
+  }
+
+  Skills.insert(skill);
+
+  var skill = {
+    name: "Fireball",
+    description: "Throw a fireball at the enemy",
+    dmgMod: 2.0,
+    manaCost: 18,
+    type: 'dmg',
+    stats: 'int',
+    target: 'enemy',
+    iconPath: '/skills/mage/fireball.png',
+    reqLvl: 1,
+    class: "Mage"
+  }
+
+  Skills.insert(skill);
+
+  var skill = {
+    name: "Backstab",
+    description: "Jump behind the enemy and strike",
+    dmgMod: 1.8,
+    manaCost: 10,
+    type: 'dmg',
+    stats: 'str',
+    target: 'enemy',
+    iconPath: '/skills/rogue/backstab.png',
+    reqLvl: 1,
+    class: "Rogue"
+  }
+
+  Skills.insert(skill);
+}
+
+if(!Items.find().count()){
+
+  var item = {
+    name: "Iron Sword",
+    description: "Normal Attacks does 20% more damage, +1 Strength",
+    dmgMod: 1.2,
+    bonus: {
+      str: 1
+    },
+    slot: "MH",
+    iconPath: '/items/equipment/knight/iron_sword.png',
+    reqLvl: 1,
+    class: "Knight",
+    equipment: true
+  }
+
+  Items.insert(item);
+
+  var item = {
+    name: "Iron Shield",
+    description: "A simple iron shield, +1 Defense",
+    bonus: {
+      def: 1
+    },
+    slot: "OF",
+    iconPath: '/items/equipment/knight/iron_shield.png',
+    reqLvl: 1,
+    class: "Knight",
+    equipment: true
+  }
+
+  Items.insert(item);
+
+  var item = {
+    name: "Iron Helmet",
+    description: "A simple iron helmet, +1 Defense",
+    bonus: {
+      def: 1
+    },
+    slot: "head",
+    iconPath: '/items/equipment/knight/iron_helmet.png',
+    reqLvl: 1,
+    class: "Knight",
+    equipment: true
+  }
+
+  Items.insert(item);
+
+  var item = {
+    name: "Iron Armor",
+    description: "A simple iron armor, +1 Defense, +30 Max HP",
+    bonus: {
+      def: 1,
+      maxHP: 30
+    },
+    slot: "armor",
+    iconPath: '/items/equipment/knight/iron_armor.png',
+    reqLvl: 1,
+    class: "Knight",
+    equipment: true
+  }
+
+  Items.insert(item);
+
+  var item = {
+    name: "Iron Leggins",
+    description: "A simple iron leggins, +1 Defense",
+    bonus: {
+      def: 1
+    },
+    slot: "leg",
+    iconPath: '/items/equipment/knight/iron_leggins.png',
+    reqLvl: 1,
+    class: "Knight",
+    equipment: true
+  }
+
+  Items.insert(item);
+
+  var item = {
+    name: "Iron Boot",
+    description: "A simple iron boot, +1 Defense",
+    bonus: {
+      def: 1
+    },
+    slot: "boot",
+    iconPath: '/items/equipment/knight/iron_boots.png',
+    reqLvl: 1,
+    class: "Knight",
+    equipment: true
+  }
+
+  Items.insert(item);
+}
