@@ -1,36 +1,34 @@
-//This updates sta and hp
+//This updates sta, hp and mana
 var refill = function(){
-  console.log("Refreshing")
   var date = new Date();
   users = Meteor.users.find().fetch();
 
   for (var i = users.length - 1; i >= 0; i--) {
     var query = {
       incSta: 0,
-      incHP: 0
+      incHP: 0,
+      incMana: 0
     };
 
     if(users[i].profile.sta < 100){
-      query.incSta = Math.floor(5 + (users[i].profile.totalCon * 0.1)).toFixed();
+      query.incSta = parseInt(Math.floor(5 + (users[i].profile.totalCon * 0.1)).toFixed());
     }
 
-    if(parseInt(users[i].profile.currentHP) < parseInt(users[i].profile.maxHP)){
-      if(parseInt(users[i].profile.maxHP) - parseInt(users[i].profile.currentHP) < 20){
-        query.incHP = parseInt(users[i].profile.maxHP) - parseInt(users[i].profile.currentHP);
+    if(parseInt(users[i].profile.currentHP) < parseInt(users[i].profile.totalMaxHP)){
+      if((parseInt(users[i].profile.totalMaxHP) - parseInt(users[i].profile.currentHP)) < 20){
+        query.incHP = parseInt(users[i].profile.totalMaxHP) - parseInt(users[i].profile.currentHP);
       }else{
-        query.incHP = Math.floor(20 + (users[i].profile.totalCon * 0.25)).toFixed();
+        query.incHP = parseInt(Math.floor(20 + (users[i].profile.totalCon * 0.25)).toFixed());
       }
     }
 
     if(parseInt(users[i].profile.currentMana) < parseInt(users[i].profile.totalMaxMana)){
-      if(parseInt(users[i].profile.totalMaxMana) - parseInt(users[i].profile.currentMana) < 5){
-        query.incMana = parseInt(users[i].profile.maxHP) - parseInt(users[i].profile.currentHP);
+      if((parseInt(users[i].profile.totalMaxMana) - parseInt(users[i].profile.currentMana)) < 5){
+        query.incMana = parseInt(users[i].profile.totalMaxMana) - parseInt(users[i].profile.currentMana);
       }else{
-        query.incMana = Math.floor(5 + (users[i].profile.totalInt * 0.25)).toFixed();
+        query.incMana = parseInt(Math.floor(5 + (users[i].profile.totalInt * 0.25)).toFixed());
       }
     }
-
-    console.log(query);
 
     Meteor.users.update(users[i]._id, {
       $inc: {
@@ -39,9 +37,7 @@ var refill = function(){
         "profile.currentMana": query.incMana,
       }
     });
-    console.log("increased!");
-
   };
 }
 
-Meteor.setInterval(function(){refill()}, 3600000)
+Meteor.setInterval(function(){refill()}, 1800000)

@@ -15,7 +15,7 @@ Template.login.events({
           errReason: err.reason,
           error: "Login Error"
         }
-        Modal.show('loginErrorModal', data);
+        Modal.show('simpleModal', data);
       }else{
         if(Meteor.user().profile.firstLogin)
           Router.go("/newAcc");
@@ -49,7 +49,7 @@ Template.login.events({
           errReason: err.reason,
           error: "Create Account Error"
         }
-        Modal.show('loginErrorModal', data);
+        Modal.show('simpleModal', data);
       }else{
         Router.go("/newAcc");
       }

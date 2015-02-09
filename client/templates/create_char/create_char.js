@@ -20,7 +20,7 @@ Template.createChar.events({
           errReason: err.reason,
           error: "Character Creation Error"
         }
-        Modal.show('loginErrorModal', data);
+        Modal.show('simpleModal', data);
       }else{
         Router.go("/main");
       }
