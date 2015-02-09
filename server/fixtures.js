@@ -205,7 +205,9 @@ if(!Items.find().count()){
     iconPath: '/items/equipment/knight/iron_sword.png',
     reqLvl: 1,
     class: "Knight",
-    equipment: true
+    equipment: true,
+    consumable: false,
+    skillItem: false
   }
 
   Items.insert(item);
@@ -216,11 +218,13 @@ if(!Items.find().count()){
     bonus: {
       def: 1
     },
-    slot: "OF",
+    slot: "OH",
     iconPath: '/items/equipment/knight/iron_shield.png',
     reqLvl: 1,
     class: "Knight",
-    equipment: true
+    equipment: true,
+    consumable: false,
+    skillItem: false
   }
 
   Items.insert(item);
@@ -235,7 +239,9 @@ if(!Items.find().count()){
     iconPath: '/items/equipment/knight/iron_helmet.png',
     reqLvl: 1,
     class: "Knight",
-    equipment: true
+    equipment: true,
+    consumable: false,
+    skillItem: false
   }
 
   Items.insert(item);
@@ -251,7 +257,9 @@ if(!Items.find().count()){
     iconPath: '/items/equipment/knight/iron_armor.png',
     reqLvl: 1,
     class: "Knight",
-    equipment: true
+    equipment: true,
+    consumable: false,
+    skillItem: false
   }
 
   Items.insert(item);
@@ -262,11 +270,13 @@ if(!Items.find().count()){
     bonus: {
       def: 1
     },
-    slot: "leg",
+    slot: "legs",
     iconPath: '/items/equipment/knight/iron_leggins.png',
     reqLvl: 1,
     class: "Knight",
-    equipment: true
+    equipment: true,
+    consumable: false,
+    skillItem: false
   }
 
   Items.insert(item);
@@ -277,8 +287,42 @@ if(!Items.find().count()){
     bonus: {
       def: 1
     },
-    slot: "boot",
+    slot: "boots",
     iconPath: '/items/equipment/knight/iron_boots.png',
+    reqLvl: 1,
+    class: "Knight",
+    equipment: true,
+    consumable: false,
+    skillItem: false
+  }
+
+  Items.insert(item);
+
+  var item = {
+    name: "Bread",
+    description: "A tasteful bread",
+    bonus: {
+      def: 1
+    },
+    slot: null,
+    iconPath: '/items/food/bread.png',
+    reqLvl: 1,
+    class: false,
+    equipment: false,
+    consumable: true,
+    skillItem: false
+  }
+
+  Items.insert(item);
+
+  var item = {
+    name: "Wine",
+    description: "A tasteful wine",
+    bonus: {
+      def: 1
+    },
+    slot: null,
+    iconPath: '/items/food/wine.png',
     reqLvl: 1,
     class: "Knight",
     equipment: true

@@ -6,15 +6,15 @@
     <div class='col-xs-4 col-md-4'>
       <div class='panel panel-primary'>
         <div class='panel-heading'>
-          <h4 class='header-center'>Active Skills - x/4</h4>
+          <h4 class='header-center'>Active Equipment</h4>
         </div>
         <div class='panel-body'>
           <div class='row'>
             {{#each activeEquipment}}
             <div class='col-xs-6 col-md-6'>
-              <div class="thumbnail inventory">
-                <img src="{{iconPath}}" title="{{name}}" class='inventoryItem'>
-              </div>
+              <a href="#" class="thumbnail inventory equipToRemove">
+                <img src="{{iconPath}}" title="{{name}} {{description}}" class='inventoryItem'>
+              </a>
             </div>
             {{/each}}
           </div>
@@ -26,14 +26,14 @@
     <div class='col-xs-6 col-md-6'>
       <div class='panel panel-warning'>
         <div class='panel-heading'>
-          <h4 class='header-center'>Invetory Skills - x/16</h4>
+          <h4 class='header-center'>Inventory : {{inventoryLength}}/16</h4>
         </div>
         <div class='panel-body'>
           <div class='row'>
-            {{#each allSkills}}
+            {{#each inventory}}
             <div class='col-xs-6 col-md-3'>
-              <a href="#" class="thumbnail inventory skillToEquip">
-                <img src="{{iconPath}}" title="{{name}}" class='inventoryItem'>
+              <a href="#" class="thumbnail inventory useItem">
+                <img src="{{iconPath}}" title="{{name}} {{description}}" class='inventoryItem'>
               </a>
             </div>
             {{/each}}
@@ -43,9 +43,9 @@
     </div>
 
     <div class='col-xs-2 col-md-2'>
-      <button id='equipSkill' class='btn btn-primary btn-lg btn-block'>Equip</button>
+      <button id='itemBtn' class='btn btn-primary btn-lg btn-block'>Use</button>
       <hr/>
-      <button class='btn btn-danger btn-lg btn-block'>Forget</button>
+      <button id="destroyBtn" class='btn btn-danger btn-lg btn-block' disabled>Destroy</button>
     </div>
   </div>
 

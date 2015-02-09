@@ -4,7 +4,12 @@ Meteor.methods({
   initTraining: initTraining,
   updateSkillPoints: updateSkillPoints,
   equipSkill: equipSkill,
-  calculateBonus: calculateBonus
+  calculateBonus: calculateBonus,
+  removeEquipment: removeEquipment,
+  addEquipment: addEquipment,
+  unsetSkill: unsetSkill,
+  destroyItems: destroyItems,
+  destroySkills: destroySkills
 });
 
 function createChar(charClass, charName){
@@ -38,14 +43,14 @@ function createChar(charClass, charName){
         skp: 1,
         skills: initialSkills,
         inventory: [],
-        inventoruSkills: [],
+        inventorySkills: [],
         activeEquipment: {
           head: stats.head,
           armor: stats.armor,
-          mainHand: stats.MH,
-          offHand: stats.OH,
+          MH: stats.MH,
+          OH: stats.OH,
           legs: stats.legs,
-          boot: stats.boot
+          boots: stats.boots
         }
       }
     }
@@ -57,19 +62,18 @@ function createChar(charClass, charName){
 
 function updateStats(type){
 
-  var query, skp;
+  var query, skp, statsPoints;
   if(type == "maxHP"){
-    query = {$inc : {"profile.maxHP": 10, "profile.skp": -1}};
-  }else if(type == "str"){
-    query = {$inc : {"profile.str": 1, "profile.skp": -1}};
-  }else if(type == "def"){
-    query = {$inc : {"profile.def": 1, "profile.skp": -1}};
-  }else if(type == "spd"){
-    query = {$inc : {"profile.spd": 1, "profile.skp": -1}};
-  }else if(type == 'mana'){
-    query = {$inc : {"profile.mana": 5, "profile.skp": -1}};
+    statsPoints = 10;
+  }else if(type == 'maxMana'){
+    statsPoints = 5;
+  }else{
+    statsPoints = 1;
   }
 
+  query = {};
+  query["profile."+type] = statsPoints;
+  query["profile.skp"] = -1;
   skp = Meteor.user().profile.skp;
 
   if(!query || !skp){
@@ -77,10 +81,13 @@ function updateStats(type){
   }
 
   updateStat = function(query, callback){
-    Meteor.users.update(Meteor.userId(), query, function(err){
+    Meteor.users.update(Meteor.userId(), {
+      $inc : query
+    }, function(err){
       if(err){
         callback(true);
       }else{
+        CHAR_HELPERS.calculateBonus();
         callback(false);
       }
     });
@@ -141,12 +148,135 @@ function updateSkillPoints(){
         "profile.trainingTime": 0
       }
     });
+
+
     return true;
   }
 }
 
 function calculateBonus(){
   CHAR_HELPERS.calculateBonus();
+}
+
+function removeEquipment(equipId){
+  var inventory = Meteor.user().profile.inventory;
+  if(inventory.length > 15){
+    return false;
+  }else{
+    item = Items.findOne(equipId);
+    inventory.push(item);
+    var query = {
+      "profile.inventory": inventory
+    };
+    CHAR_HELPERS.resetCharEquipSlot(item.slot);
+    Meteor.users.update(Meteor.userId(), {
+      $set : query
+    });
+
+    CHAR_HELPERS.calculateBonus();
+  }
+}
+
+function addEquipment(equipId){
+  var inventory = Meteor.user().profile.inventory;
+
+  item = Items.findOne(equipId);
+  var newInventory = [];
+  var index, existsOnInventory;
+  for(var i = 0; i < inventory.length; i++){
+    if(inventory[i]._id == equipId){
+      index = i;
+      existsOnInventory = true;
+    }
+  };
+
+
+  inventory.splice(index, 1);
+
+  var query = {
+    "profile.inventory": inventory
+  };
+  CHAR_HELPERS.AddCharEquipSlot(item);
+  Meteor.users.update(Meteor.userId(), {
+    $set : query
+  });
+
+  CHAR_HELPERS.calculateBonus();
+
+}
+
+function unsetSkill(skillId){
+  var inventorySkills = Meteor.user().profile.inventorySkills;
+  var skills = Meteor.user().profile.skills;
+  var index = -1;
+  skill = Skills.findOne(skillId);
+  inventorySkills.push(skill);
+
+  for(var i = 0; i < skills.length; i++){
+    if(skills[i]._id == skillId){
+      index = i;
+    }
+  };
+
+  if(index == -1){
+    return;
+  }
+
+  skills.splice(index, 1);
+
+  var query = {
+    "profile.inventorySkills": inventorySkills,
+    "profile.skills": skills
+  };
+  Meteor.users.update(Meteor.userId(), {
+    $set : query
+  });
+
+}
+
+function destroyItems(itemId){
+  var inventory = Meteor.user().profile.inventory;
+  var index = -1;
+  console.log(itemId);
+  inventory.forEach(function(item, i){
+    if(item._id == itemId){
+      index = i
+    }
+  });
+
+  console.log(index);
+
+  if(index == -1)
+    return;
+
+  inventory.splice(index, 1);
+
+  Meteor.users.update(Meteor.userId(), {
+    $set: {
+      "profile.inventory": inventory
+    }
+  });
+}
+
+function destroySkills(skillId){
+  var inventorySkills = Meteor.user().profile.inventorySkills;
+  var index = -1;
+  inventorySkills.forEach(function(skill, i){
+    if(skill._id == skillId){
+      index = i
+    }
+  });
+
+  if(index == -1)
+    return;
+
+  inventorySkills.splice(index, 1);
+
+  Meteor.users.update(Meteor.userId(), {
+    $set: {
+      "profile.inventorySkills": inventorySkills
+    }
+  });
 }
 
 CHAR_HELPERS = {
@@ -171,7 +301,7 @@ CHAR_HELPERS = {
     var hp = user.profile.maxHP;
 
     for(var index in activeEquipment) {
-      if (activeEquipment.hasOwnProperty(index)) {
+      if (activeEquipment.hasOwnProperty(index) && activeEquipment[index] && activeEquipment[index].bonus) {
         var attr = activeEquipment[index].bonus;
         if(attr.str){
           bStr += attr.str;
@@ -198,21 +328,45 @@ CHAR_HELPERS = {
     };
 
     var query = {
-      "profile.str": str + bStr,
-      "profile.def": def + bDef,
-      "profile.int": int + bInt,
-      "profile.con": con + bCon,
-      "profile.spd": spd + bSpd,
-      "profile.maxHP": hp + bHP,
-      "profile.maxMana": mana + bMana
+      "profile.totalStr": str + bStr,
+      "profile.totalDef": def + bDef,
+      "profile.totalInt": int + bInt,
+      "profile.totalCon": con + bCon,
+      "profile.totalSpd": spd + bSpd,
+      "profile.totalMaxHP": hp + bHP,
+      "profile.totalMaxMana": mana + bMana
     };
 
     if(firstCreate){
-      query["profile.currentHP"] = query["profile.maxHP"];
+      query["profile.currentHP"] = query["profile.totalMaxHP"];
     }
 
     Meteor.users.update(user._id, {
       $set : query
+    });
+
+    if(Meteor.user().profile.currentHP > Meteor.user().profile.totalMaxHP){
+      Meteor.users.update(Meteor.userId(), {
+        $set: {
+          "profile.currentHP": Meteor.user().profile.totalMaxHP
+        }
+      });
+    }
+  },
+
+  resetCharEquipSlot: function(slotName){
+    var query = {};
+    query["profile.activeEquipment."+slotName.toString()] = null;
+    Meteor.users.update(Meteor.userId(), {
+      $set: query
+    });
+  },
+
+  AddCharEquipSlot: function(equip){
+    var query = {};
+    query["profile.activeEquipment."+equip.slot.toString()] = equip;
+    Meteor.users.update(Meteor.userId(), {
+      $set: query
     });
   }
 }
@@ -237,7 +391,7 @@ function getInitialStatus(charClass){
     MH: null,
     OH: null,
     legs: null,
-    boot: null
+    boots: null
   };
 
 
@@ -253,7 +407,7 @@ function getInitialStatus(charClass){
     initialStats.head = Items.findOne({name: "Iron Helmet"});
     initialStats.armor = Items.findOne({name: "Iron Armor"});
     initialStats.legs = Items.findOne({name: "Iron Leggins"});
-    initialStats.boot = Items.findOne({name: "Iron Boot"});
+    initialStats.boots = Items.findOne({name: "Iron Boot"});
   }else if(charClass == 'Mage'){
     initialStats.maxHP = 110;
     initialStats.str = 5;
@@ -278,7 +432,9 @@ function equipSkill(skillId){
 
   if(skill){
     var alreadyEquiped = false;
+    var existsOnInventory = false;
     var userSkills = Meteor.user().profile.skills;
+    var inventorySkills = Meteor.user().profile.inventorySkills;
     if(userSkills.length > 3){
       return {err: "All slots are equiped"};
     }
@@ -289,17 +445,32 @@ function equipSkill(skillId){
       }
     });
 
+    inventorySkills.forEach(function(skill, i){
+      if(skill._id == skillId){
+        existsOnInventory = true;
+        index = i;
+      }
+    })
+
+
     if(alreadyEquiped){
       return {err: "Skill already equiped"};
-    }else{
+    }else if(existsOnInventory){
       userSkills.push(skill);
+
+      inventorySkills.splice(index, 1);
+
+
       Meteor.users.update(Meteor.userId(), {
         $set: {
-          "profile.skills": userSkills
+          "profile.skills": userSkills,
+          "profile.inventorySkills": inventorySkills
         }
       });
 
       return true;
+    }else{
+      return {err: "not exists on inventory"};
     }
 
   }else{
