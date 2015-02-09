@@ -11,17 +11,6 @@ Template.exploreChallenge.rendered = function(){
   GLOBAL_CHALLENGE = setInterval(activateActionBar, 1000);
 }
 
-function activateActionButtons(){
-  $('#attack-btn').attr('disabled', false);
-  $('#defense-btn').attr('disabled', false);
-}
-
-function deactivateActionButtons(){
-  $('#attack-btn').attr('disabled', true);
-  $('#defense-btn').attr('disabled', true);
-}
-
-
 function enemyAtk(){
   Meteor.call("updateBattleLog", getChallenge().name, 'enemy', null, Session.get("enemyId"), null, Session.get("battleRegId"), function(err, result){
     if(err){
@@ -64,9 +53,6 @@ function activateActionBar(){
     if(err){
 
     }else{
-      if(result.ready)
-        activateActionButtons();
-
       if(result.enemyProgress > 0){
         $actionBar = $("#timeBarE");
         $("#timeBarE").attr('aria-valuenow', result.enemyProgress);
@@ -93,24 +79,27 @@ Template.exploreChallenge.helpers({
 Template.exploreChallenge.events({
   'click #attack-btn' : function(event){
     event.preventDefault();
-    deactivateActionButtons();
     Meteor.call("updateBattleLog", Meteor.user().profile.charName, 'user', null, Session.get("enemyId"), null, Session.get("battleRegId"), function(err, result){
       if(err){
 
       }else{
-        currentHP = getChallenge().boss ? getChallenge().currentHP : result.enemyCurrentHP;
-        maxHP = getChallenge().boss ? getChallenge().maxHP : result.enemyMaxHP;
-        percentage = parseInt((currentHP * 100) / maxHP);
-        $("#enemyHpBar").attr('aria-valuenow', currentHP);
-        $("#enemyHpBar").css('width', percentage+"%");
-        $("#timeBar").attr('aria-valuenow', 0);
-        $("#timeBar").css('width', "0%");
-        addLog(result.log);
-        if(result.result.state == 'finished'){
-          clearInterval(GLOBAL_CHALLENGE);
+        if(result.Err){
+          addLog(result.Err);
+        }else{
+          currentHP = getChallenge().boss ? getChallenge().currentHP : result.enemyCurrentHP;
+          maxHP = getChallenge().boss ? getChallenge().maxHP : result.enemyMaxHP;
+          percentage = Math.round(((currentHP * 100) / maxHP).toFixed());
+          console.log(percentage);
+          $("#enemyHpBar").attr('aria-valuenow', currentHP);
+          $("#enemyHpBar").css('width', percentage+"%");
+          $("#timeBar").attr('aria-valuenow', 0);
+          $("#timeBar").css('width', "0%");
+          addLog(result.log);
+          if(result.result.state == 'finished'){
+            clearInterval(GLOBAL_CHALLENGE);
+          }
         }
       }
-
     })
   },
 

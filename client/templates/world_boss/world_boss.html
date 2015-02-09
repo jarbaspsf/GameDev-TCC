@@ -13,7 +13,7 @@
     <tbody>
       {{#each worldBosses}}
       <tr>
-        <td>{{name}}</td>
+        <td>{{_id}}</td>
         <td>{{currentHP}}</td>
         <td id="{{_id}}">{{#if loading}}{{>spinner}}{{/if}}</td>
         <td>
@@ -24,4 +24,6 @@
       {{/each}}
     </tbody>
   </table>
+
+
 </template>

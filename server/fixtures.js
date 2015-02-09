@@ -142,6 +142,20 @@ if(!Challenges.find().count()){
 
   Challenges.insert(wBoss);
 
+  var wBoss = {
+    name: "Test Boss",
+    imagePath: "deathbringer.png",
+    maxHP: 9000000,
+    currentHP: 9000000,
+    str: 1,
+    def: 10,
+    spd: 1,
+    time: 0,
+    boss: true
+  };
+
+  Challenges.insert(wBoss);
+
 }
 
 if(!Skills.find().count()){

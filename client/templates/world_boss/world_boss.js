@@ -51,6 +51,11 @@ function initialize(){
 
 function initCountdown(hours, id){
   var util = new Date();
+  var temporary = false;
+;
+  if(hours == 0){
+    temporary = true;
+  }
 
   if(hours <= util.getHours())
     util.setDate(util.getDate() + 1);
@@ -75,7 +80,7 @@ function initCountdown(hours, id){
     minutes = parseInt(seconds_left / 60);
     seconds = parseInt(seconds_left % 60);
 
-    if(checkWindow(util, id)){
+    if(checkWindow(util, id, temporary)){
       $("."+id).attr('disabled', false);
       countdown.innerHTML = "Ready!!!"
     }else{
@@ -88,9 +93,9 @@ function initCountdown(hours, id){
 
 }
 
-function checkWindow(util, id){
+function checkWindow(util, id, temporary){
   currentDate = new Date();
-  if(util.getHours() == currentDate.getHours() && currentDate.getMinutes() <= 20)
+  if(util.getHours() == currentDate.getHours() && currentDate.getMinutes() <= 20 || temporary)
     return true;
   return false;
 }

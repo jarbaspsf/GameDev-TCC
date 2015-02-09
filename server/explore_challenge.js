@@ -1,7 +1,8 @@
 Meteor.methods({
   initBattleLog: initBattleLog,
   updateBattleLog: updateBattleLog,
-  calculateATB: calculateATB
+  calculateATB: calculateATB,
+  getBossBattleLogs: getBossBattleLogs
 });
 
 function calculateATB(battleRegId, enemyId){
@@ -11,7 +12,11 @@ function calculateATB(battleRegId, enemyId){
 
   var userReady = false;
   var enemyProgress = 0;
-  var lastBattleLog  = BattleLogs.find({battleRegId: battleRegId}, {sort : {date: -1}}).fetch()[0];
+  var lastBattleLog;
+  if(enemy.boss)
+    lastBattleLog  = BattleLogs.find({battleRegId: battleRegId, enemyId: enemyId}, {sort : {date: -1}}).fetch()[0];
+  else
+    lastBattleLog  = BattleLogs.find({battleRegId: battleRegId}, {sort : {date: -1}}).fetch()[0];
   //tests on battleLog
   //Enemy!!
   if(lastBattleLog.enemyProgress >= 100){
@@ -68,66 +73,64 @@ function initBattleLog(enemyId){
 
   var battleRegId = BattleRegs.insert(battleReg)
 
-  if(enemy.boss){
-    return battleRegId;
-  }else{
-    battleLog = {
-      userId: Meteor.userId(),
-      username: Meteor.user().username,
-      charName: Meteor.user().profile.charName,
-      charMaxHP: Meteor.user().profile.maxHP,
-      charCurrentHP: Meteor.user().profile.currentHP,
-      enemyId: enemyId,
-      enemyName: enemy.name,
-      enemyMaxHP: enemy.maxHP,
-      enemyCurrentHP: enemy.maxHP,
-      log: Meteor.user().profile.charName + " engages " + enemy.name,
-      date: new Date().getTime(),
-      result : {
-        state: 'initied', won_by: null
+  battleLog = {
+    userId: Meteor.userId(),
+    username: Meteor.user().username,
+    charName: Meteor.user().profile.charName,
+    charMaxHP: Meteor.user().profile.maxHP,
+    charCurrentHP: Meteor.user().profile.currentHP,
+    enemyId: enemyId,
+    enemyName: enemy.name,
+    enemyMaxHP: enemy.maxHP,
+    enemyCurrentHP: enemy.maxHP,
+    log: Meteor.user().profile.charName + " engages " + enemy.name,
+    date: new Date().getTime(),
+    result : {
+      state: 'initied', won_by: null
+    },
+    battleRegId: battleRegId,
+    enemyDebuffs: {
+      stunDebuff: {
+        active: false,
+        tick: 0
       },
-      battleRegId: battleRegId,
-      enemyDebuffs: {
-        stunDebuff: {
-          active: false,
-          tick: 0
-        },
 
-        speedDebuff: {
-          active: false,
-          tick: 0,
-          qty: 0
-        }
-      },
-      enemyBuffs: {
-        speedBuff: {
-          active: false,
-          tick: 0,
-          qty: 0
-        }
-      },
-      enemyProgress: 0
-    }
-
-    Meteor.users.update(Meteor.userId(), {
-      $inc: {
-        "profile.sta": -5
+      speedDebuff: {
+        active: false,
+        tick: 0,
+        qty: 0
       }
-    });
-
-    BATTLE_HELPER.resetCharATB();
-    BattleLogs.insert(battleLog);
-    return battleRegId;
+    },
+    enemyBuffs: {
+      speedBuff: {
+        active: false,
+        tick: 0,
+        qty: 0
+      }
+    },
+    enemyProgress: 0,
+    damage: 0
   }
+
+  Meteor.users.update(Meteor.userId(), {
+    $inc: {
+      "profile.sta": -5
+    }
+  });
+
+  BATTLE_HELPER.resetCharATB();
+  BattleLogs.insert(battleLog);
+  return battleRegId;
+
 
 }
 
 function updateBattleLog(actionUser, type, skillId, enemyId, pvp, battleRegId){
 
-  var damage, usesSkill, enemy, firstHit;
+  var damage = 0
+  var usesSkill, enemy, firstHit;
   var skill = Skills.findOne(skillId);
   enemy = Challenges.findOne(enemyId);
-
   //Test ATB
   if(type != "enemy"){
     if(!BATTLE_HELPER.checkCharATB())
@@ -135,7 +138,7 @@ function updateBattleLog(actionUser, type, skillId, enemyId, pvp, battleRegId){
   }
 
   if(enemy.boss){
-    lastBattleLog  = BattleLogs.find({bossId: enemyId}, {sort : {date: -1}}).fetch()[0];
+    lastBattleLog  = BattleLogs.find({battleRegId: battleRegId, enemyId: enemyId}, {sort : {date: -1}}).fetch()[0];
     //first hit on boss
     if(!lastBattleLog){
       lastBattleLog = {
@@ -154,15 +157,27 @@ function updateBattleLog(actionUser, type, skillId, enemyId, pvp, battleRegId){
 
   //normal atk
   if(skill){
-    damage = ((Meteor.user().profile.str * skill.dmgMod) * Math.floor((Math.random() * 2) + 1)).toFixed();
+    var userStats;
+    if(skill.stats == 'str')
+      userStats = Meteor.user().profile.totalStr;
+    else
+      userStats = Meteor.user().profile.totalInt
+
+    damage = parseInt(((userStats * skill.dmgMod) * Math.floor((Math.random() * 2) + 1)).toFixed());
     usesSkill = true;
     updateMana(skill.manaCost);
   }else if(type != 'enemy'){
-    damage = ((Meteor.user().profile.str * 1.1) * Math.floor((Math.random() * 2) + 1)).toFixed();
-    damage = damage - Math.floor((enemy.def * 1.2) / 2).toFixed();
+    var weapon = Meteor.user().profile.activeEquipment.MH;
+    var dmgMod = 0;
+    if(weapon && weapon.dmgMod)
+      dmgMod = weapon.dmgMod;
+    else
+      dmgMod = 1.1;
+    damage = parseInt(((Meteor.user().profile.totalStr * dmgMod) * Math.floor((Math.random() * 2) + 1)).toFixed());;
+    damage = parseInt(damage - Math.floor((enemy.def * 1.2) / 2).toFixed());
   }else{
-    damage = ((enemy.str * 1.2) * Math.floor((Math.random() * 2) + 1)).toFixed();
-    damage = damage - Math.floor((Meteor.user().profile.def * 1.1) / 2).toFixed();
+    damage = parseInt(((enemy.str * 1.2) * Math.floor((Math.random() * 2) + 1)).toFixed());
+    damage = parseInt(damage - Math.floor((Meteor.user().profile.totalDef * 1.1) / 2).toFixed());
   }
 
   if(damage < 0)
@@ -192,16 +207,11 @@ function updateBattleLog(actionUser, type, skillId, enemyId, pvp, battleRegId){
     enemyCurrentHP: lastBattleLog.enemyCurrentHP,
     log: log,
     date: new Date().getTime(),
-    damage: damage,
+    damage: parseInt(damage),
     enemyProgress: lastBattleLog.enemyProgress,
     enemyBuffs: lastBattleLog.enemyBuffs,
-    enemyDebuffs: lastBattleLog.enemyDebuffs
-  }
-
-  if(enemy.boss){
-    battleLog.bossId = enemyId;
-  }else{
-    battleLog.battleRegId = battleRegId
+    enemyDebuffs: lastBattleLog.enemyDebuffs,
+    battleRegId: battleRegId
   }
 
   if(type == "enemy"){
@@ -221,10 +231,10 @@ function updateBattleLog(actionUser, type, skillId, enemyId, pvp, battleRegId){
     if(pvp){
 
     }else{
+      BATTLE_HELPER.resetCharATB();
       if(enemy.boss){
         updateBossDmg(enemyId, damage);
         if(enemy.currentHP <= 0){
-          enemy.currentHP = 0;
           battleLog.result = {state: 'finished', won_by: actionUser};
           battleLog.log += "\n"+ actionUser + " won the battle!";
         }else{
@@ -239,10 +249,9 @@ function updateBattleLog(actionUser, type, skillId, enemyId, pvp, battleRegId){
           battleLog.result = {state: 'finished', won_by: actionUser};
           battleLog.log += "\n"+ actionUser + " won the battle!";
         }else{
-          battleLog.enemyCurrentHP = (lastBattleLog.enemyCurrentHP - damage).toFixed();
+          battleLog.enemyCurrentHP = parseInt((lastBattleLog.enemyCurrentHP - damage).toFixed());
           battleLog.result = {state: 'fighting', won_by: null};
         }
-        BATTLE_HELPER.resetCharATB();
         BattleLogs.insert(battleLog);
         return battleLog;
       }
@@ -283,6 +292,14 @@ BATTLE_HELPER = {
   }
 }
 
+function getBossBattleLogs(enemyId){
+  bl = BattleLogs.find({
+    enemyId: enemyId,
+    damage: {$gt: 0}
+  }).fetch();
+  console.log(bl);
+}
+
 function updateCharDmg(damage){
 
   Meteor.users.update(Meteor.userId(), {
@@ -303,7 +320,7 @@ function updateMana(mana){
 
 function updateBossDmg(enemyId, damage){
 
-  WorldBosses.update(enemyId, {
+  Challenges.update(enemyId, {
     $inc: {
       "currentHP": -(damage)
     }
