@@ -51,6 +51,44 @@ function createChar(charClass, charName){
           OH: stats.OH,
           legs: stats.legs,
           boots: stats.boots
+        },
+        buffs: {
+          speedBuff: {
+            active: false,
+            tick: 0,
+            qty: 0
+          },
+
+          strengthBuff: {
+            active: false,
+            tick: 0,
+            qty: 0
+          },
+
+          inteligenceBuff: {
+            active: false,
+            tick: 0,
+            qty: 0
+          },
+        },
+        debuffs: {
+          stunDebuff: {
+            active: false,
+            tick: 0
+          },
+          speedDebuff: {
+            active: false,
+            tick: 0,
+            qty: 0
+          },
+          bleedingDebuff: {
+            active: false,
+            tick: 0,
+            qty: 0
+          }
+        },
+        battle: {
+          progress: 0
         }
       }
     }
@@ -339,6 +377,7 @@ CHAR_HELPERS = {
 
     if(firstCreate){
       query["profile.currentHP"] = query["profile.totalMaxHP"];
+      query["profile.currentMana"] = query["profile.totalMaxMana"];
     }
 
     Meteor.users.update(user._id, {
@@ -349,6 +388,14 @@ CHAR_HELPERS = {
       Meteor.users.update(Meteor.userId(), {
         $set: {
           "profile.currentHP": Meteor.user().profile.totalMaxHP
+        }
+      });
+    }
+
+    if(Meteor.user().profile.currentMana > Meteor.user().profile.totalMaxMana){
+      Meteor.users.update(Meteor.userId(), {
+        $set: {
+          "profile.currentMana": Meteor.user().profile.totalMaxMana
         }
       });
     }
@@ -399,7 +446,7 @@ function getInitialStatus(charClass){
     initialStats.maxHP = 150;
     initialStats.str = 9;
     initialStats.def = 10;
-    initialStats.spd = 3;
+    initialStats.spd = 7;
     initialStats.mana = 50;
     initialStats.initialSkill = Skills.findOne({name: "Power Strike"});
     initialStats.MH = Items.findOne({name: "Iron Sword"});
@@ -407,21 +454,33 @@ function getInitialStatus(charClass){
     initialStats.head = Items.findOne({name: "Iron Helmet"});
     initialStats.armor = Items.findOne({name: "Iron Armor"});
     initialStats.legs = Items.findOne({name: "Iron Leggins"});
-    initialStats.boots = Items.findOne({name: "Iron Boot"});
+    initialStats.boots = Items.findOne({name: "Iron Boots"});
   }else if(charClass == 'Mage'){
     initialStats.maxHP = 110;
     initialStats.str = 5;
     initialStats.def = 2;
-    initialStats.spd = 5;
+    initialStats.spd = 9;
     initialStats.mana = 100;
     initialStats.initialSkill = Skills.findOne({name: "Fireball"});
+    initialStats.MH = Items.findOne({name: "Basic Staff"});
+    initialStats.OH = Items.findOne({name: "Basic Scepter"});
+    initialStats.head = Items.findOne({name: "Adept Helmet"});
+    initialStats.armor = Items.findOne({name: "Adept Coat"});
+    initialStats.legs = Items.findOne({name: "Adept Leggins"});
+    initialStats.boots = Items.findOne({name: "Adept Shoes"});
   }else if(charClass == 'Rogue'){
     initialStats.maxHP = 125;
     initialStats.str = 7;
     initialStats.def = 6;
-    initialStats.spd = 9;
+    initialStats.spd = 13;
     initialStats.mana = 75;
     initialStats.initialSkill = Skills.findOne({name: "Backstab"});
+    initialStats.MH = Items.findOne({name: "Basic Dagger"});
+    initialStats.OH = Items.findOne({name: "Basic Pistol"});
+    initialStats.head = Items.findOne({name: "Leather Mask"});
+    initialStats.armor = Items.findOne({name: "Leather Jacket"});
+    initialStats.legs = Items.findOne({name: "Leather Leggins"});
+    initialStats.boots = Items.findOne({name: "Leather Boots"});
   }
 
   return initialStats;

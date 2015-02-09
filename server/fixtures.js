@@ -196,10 +196,10 @@ if(!Items.find().count()){
 
   var item = {
     name: "Iron Sword",
-    description: "Normal Attacks does 20% more damage, +1 Strength",
+    description: "Normal Attacks does 20% more damage, +3 Strength",
     dmgMod: 1.2,
     bonus: {
-      str: 1
+      str: 3
     },
     slot: "MH",
     iconPath: '/items/equipment/knight/iron_sword.png',
@@ -207,16 +207,17 @@ if(!Items.find().count()){
     class: "Knight",
     equipment: true,
     consumable: false,
-    skillItem: false
+    skillItem: false,
+    tier: 0
   }
 
   Items.insert(item);
 
   var item = {
     name: "Iron Shield",
-    description: "A simple iron shield, +1 Defense",
+    description: "A simple iron shield, +4 Defense",
     bonus: {
-      def: 1
+      def: 4
     },
     slot: "OH",
     iconPath: '/items/equipment/knight/iron_shield.png',
@@ -224,16 +225,17 @@ if(!Items.find().count()){
     class: "Knight",
     equipment: true,
     consumable: false,
-    skillItem: false
+    skillItem: false,
+    tier: 0
   }
 
   Items.insert(item);
 
   var item = {
     name: "Iron Helmet",
-    description: "A simple iron helmet, +1 Defense",
+    description: "A simple iron helmet, +3 Defense",
     bonus: {
-      def: 1
+      def: 3
     },
     slot: "head",
     iconPath: '/items/equipment/knight/iron_helmet.png',
@@ -241,16 +243,17 @@ if(!Items.find().count()){
     class: "Knight",
     equipment: true,
     consumable: false,
-    skillItem: false
+    skillItem: false,
+    tier: 0
   }
 
   Items.insert(item);
 
   var item = {
     name: "Iron Armor",
-    description: "A simple iron armor, +1 Defense, +30 Max HP",
+    description: "A simple iron armor, +3 Defense, +30 Max HP",
     bonus: {
-      def: 1,
+      def: 3,
       maxHP: 30
     },
     slot: "armor",
@@ -259,16 +262,17 @@ if(!Items.find().count()){
     class: "Knight",
     equipment: true,
     consumable: false,
-    skillItem: false
+    skillItem: false,
+    tier: 0
   }
 
   Items.insert(item);
 
   var item = {
     name: "Iron Leggins",
-    description: "A simple iron leggins, +1 Defense",
+    description: "A simple iron leggins, +3 Defense",
     bonus: {
-      def: 1
+      def: 3
     },
     slot: "legs",
     iconPath: '/items/equipment/knight/iron_leggins.png',
@@ -276,16 +280,17 @@ if(!Items.find().count()){
     class: "Knight",
     equipment: true,
     consumable: false,
-    skillItem: false
+    skillItem: false,
+    tier: 0
   }
 
   Items.insert(item);
 
   var item = {
-    name: "Iron Boot",
-    description: "A simple iron boot, +1 Defense",
+    name: "Iron Boots",
+    description: "A simple iron boot, +3 Defense",
     bonus: {
-      def: 1
+      def: 3
     },
     slot: "boots",
     iconPath: '/items/equipment/knight/iron_boots.png',
@@ -293,10 +298,245 @@ if(!Items.find().count()){
     class: "Knight",
     equipment: true,
     consumable: false,
-    skillItem: false
+    skillItem: false,
+    tier: 0
   }
 
   Items.insert(item);
+
+
+  ///////////////////////////////
+  //Mage Items
+  ///////////////////////////////
+
+
+  var item = {
+    name: "Basic Staff",
+    description: "Normal Attacks does 10% more damage, +3 Inteligence",
+    dmgMod: 1.1,
+    bonus: {
+      int: 3
+    },
+    slot: "MH",
+    iconPath: '/items/equipment/mage/basic_staff.png',
+    reqLvl: 1,
+    class: "Mage",
+    equipment: true,
+    consumable: false,
+    skillItem: false,
+    tier: 0
+  }
+
+  Items.insert(item);
+
+  var item = {
+    name: "Basic Scepter",
+    description: "The basic adept scepter, +1 Inteligence",
+    bonus: {
+      int: 1
+    },
+    slot: "OH",
+    iconPath: '/items/equipment/mage/basic_scepter.png',
+    reqLvl: 1,
+    class: "Mage",
+    equipment: true,
+    consumable: false,
+    skillItem: false,
+    tier: 0
+  }
+
+  Items.insert(item);
+
+  var item = {
+    name: "Adept Helmet",
+    description: "The basic adept helmet, +1 Defense",
+    bonus: {
+      def: 1
+    },
+    slot: "head",
+    iconPath: '/items/equipment/mage/adept_helmet.png',
+    reqLvl: 1,
+    class: "Mage",
+    equipment: true,
+    consumable: false,
+    skillItem: false,
+    tier: 0
+  }
+
+  Items.insert(item);
+
+  var item = {
+    name: "Adept Coat",
+    description: "The basic adept coat, +1 Defense, +30 Max Mana",
+    bonus: {
+      def: 1,
+      maxMana: 30
+    },
+    slot: "armor",
+    iconPath: '/items/equipment/mage/adept_coat.png',
+    reqLvl: 1,
+    class: "Mage",
+    equipment: true,
+    consumable: false,
+    skillItem: false,
+    tier: 0
+  }
+
+  Items.insert(item);
+
+  var item = {
+    name: "Adept Leggins",
+    description: "The basic adept leggins, +1 Defense",
+    bonus: {
+      def: 1
+    },
+    slot: "legs",
+    iconPath: '/items/equipment/mage/adept_leggins.png',
+    reqLvl: 1,
+    class: "Mage",
+    equipment: true,
+    consumable: false,
+    skillItem: false,
+    tier: 0
+  }
+
+  Items.insert(item);
+
+  var item = {
+    name: "Adept Shoes",
+    description: "The basic adept shoes, +1 Defense",
+    bonus: {
+      def: 1
+    },
+    slot: "boots",
+    iconPath: '/items/equipment/mage/adept_shoes.png',
+    reqLvl: 1,
+    class: "Mage",
+    equipment: true,
+    consumable: false,
+    skillItem: false,
+    tier: 0
+  }
+
+  Items.insert(item);
+
+  ///////////////////////////////
+  //Rogue Items
+  ///////////////////////////////
+
+
+  var item = {
+    name: "Basic Dagger",
+    description: "Normal Attacks does 15% more damage, +2 Strength",
+    dmgMod: 1.15,
+    bonus: {
+      str: 2
+    },
+    slot: "MH",
+    iconPath: '/items/equipment/rogue/basic_dagger.png',
+    reqLvl: 1,
+    class: "Rogue",
+    equipment: true,
+    consumable: false,
+    skillItem: false,
+    tier: 0
+  }
+
+  Items.insert(item);
+
+  var item = {
+    name: "Basic Pistol",
+    description: "A basic pistol, +2 Strength",
+    bonus: {
+      str: 2
+    },
+    slot: "OH",
+    iconPath: '/items/equipment/rogue/basic_pistol.png',
+    reqLvl: 1,
+    class: "Rogue",
+    equipment: true,
+    consumable: false,
+    skillItem: false,
+    tier: 0
+  }
+
+  Items.insert(item);
+
+  var item = {
+    name: "Leather Mask",
+    description: "A basic leather mask, +1 Defense, +1 Speed",
+    bonus: {
+      def: 1,
+      spd: 1
+    },
+    slot: "head",
+    iconPath: '/items/equipment/rogue/leather_mask.png',
+    reqLvl: 1,
+    class: "Rogue",
+    equipment: true,
+    consumable: false,
+    skillItem: false,
+    tier: 0
+  }
+
+  Items.insert(item);
+
+  var item = {
+    name: "Leather Jacket",
+    description: "A basic leather jacket, +2 Defense",
+    bonus: {
+      def: 2
+    },
+    slot: "armor",
+    iconPath: '/items/equipment/rogue/leather_jacket.png',
+    reqLvl: 1,
+    class: "Rogue",
+    equipment: true,
+    consumable: false,
+    skillItem: false,
+    tier: 0
+  }
+
+  Items.insert(item);
+
+  var item = {
+    name: "Leather Leggins",
+    description: "A basic leather leggins, +2 Defense",
+    bonus: {
+      def: 2
+    },
+    slot: "legs",
+    iconPath: '/items/equipment/rogue/leather_leggins.png',
+    reqLvl: 1,
+    class: "Rogue",
+    equipment: true,
+    consumable: false,
+    skillItem: false,
+    tier: 0
+  }
+
+  Items.insert(item);
+
+  var item = {
+    name: "Leather Boots",
+    description: "A basic leather boots, +2 Defense, +2 Speed",
+    bonus: {
+      def: 1,
+      spd: 2
+    },
+    slot: "boots",
+    iconPath: '/items/equipment/rogue/leather_boots.png',
+    reqLvl: 1,
+    class: "Rogue",
+    equipment: true,
+    consumable: false,
+    skillItem: false,
+    tier: 0
+  }
+
+  Items.insert(item);
+
+  //Consumable
 
   var item = {
     name: "Bread",
@@ -310,7 +550,8 @@ if(!Items.find().count()){
     class: false,
     equipment: false,
     consumable: true,
-    skillItem: false
+    skillItem: false,
+    tier: 1
   }
 
   Items.insert(item);
@@ -325,7 +566,8 @@ if(!Items.find().count()){
     iconPath: '/items/food/wine.png',
     reqLvl: 1,
     class: "Knight",
-    equipment: true
+    equipment: true,
+    tier: 1
   }
 
   Items.insert(item);

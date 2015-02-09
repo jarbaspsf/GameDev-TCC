@@ -23,17 +23,10 @@ function deactivateActionButtons(){
 
 
 function enemyAtk(){
-  $("#timeBarE").attr('aria-valuenow', 100);
-  $("#timeBarE").css('width', "100%");
   Meteor.call("updateBattleLog", getChallenge().name, 'enemy', null, Session.get("enemyId"), null, Session.get("battleRegId"), function(err, result){
     if(err){
 
     }else{
-      currentHP = Meteor.user().profile.currentHP;
-      maxHP = Meteor.user().profile.maxHP;
-      percentage = parseInt((currentHP * 100) / maxHP);
-      $("#myHpBar").attr('aria-valuenow', currentHP);
-      $("#myHpBar").css('width', percentage+"%");
       addLog(result.log);
       if(result.result.state == 'finished'){
         clearInterval(GLOBAL_CHALLENGE);
@@ -44,7 +37,7 @@ function enemyAtk(){
 }
 
 function activateActionBar(){
-  $actionBar = $("#timeBar");
+/*  $actionBar = $("#timeBar");
   current = parseInt($actionBar.attr('aria-valuenow'));
   progress = current + (Meteor.user().profile.spd * 1.25);
   $("#timeBar").attr('aria-valuenow', progress);
@@ -65,7 +58,25 @@ function activateActionBar(){
     if(parseInt($actionBar.attr('aria-valuenow')) >= parseInt($actionBar.attr('aria-valuemax'))){
       enemyAtk();
     }
-  }
+  } */
+
+  Meteor.call("calculateATB", Session.get("battleRegId"), Session.get("enemyId"), function(err, result){
+    if(err){
+
+    }else{
+      if(result.ready)
+        activateActionButtons();
+
+      if(result.enemyProgress > 0){
+        $actionBar = $("#timeBarE");
+        $("#timeBarE").attr('aria-valuenow', result.enemyProgress);
+        $("#timeBarE").css('width', result.enemyProgress+"%");
+        if(result.enemyProgress >= 100){
+          enemyAtk();
+        }
+      }
+    }
+  })
 }
 
 Template.exploreChallenge.helpers({
@@ -112,19 +123,22 @@ Template.exploreChallenge.events({
         if(err){
 
         }else{
-          currentHP = getChallenge().boss ? getChallenge().currentHP : result.enemyCurrentHP;
-          maxHP = getChallenge().boss ? getChallenge().maxHP : result.enemyMaxHP;
-          percentage = parseInt((currentHP * 100) / maxHP);
-          $("#enemyHpBar").attr('aria-valuenow', currentHP);
-          $("#enemyHpBar").css('width', percentage+"%");
-          $("#timeBar").attr('aria-valuenow', 0);
-          $("#timeBar").css('width', "0%");
-          addLog(result.log);
-          if(result.result.state == 'finished'){
-            clearInterval(GLOBAL_CHALLENGE);
+          if(result.Err){
+            addLog(result.Err);
+          }else{
+            currentHP = getChallenge().boss ? getChallenge().currentHP : result.enemyCurrentHP;
+            maxHP = getChallenge().boss ? getChallenge().maxHP : result.enemyMaxHP;
+            percentage = parseInt((currentHP * 100) / maxHP);
+            $("#enemyHpBar").attr('aria-valuenow', currentHP);
+            $("#enemyHpBar").css('width', percentage+"%");
+            $("#timeBar").attr('aria-valuenow', 0);
+            $("#timeBar").css('width', "0%");
+            addLog(result.log);
+            if(result.result.state == 'finished'){
+              clearInterval(GLOBAL_CHALLENGE);
+            }
           }
         }
-
       })
     }
   }
