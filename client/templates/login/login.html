@@ -48,3 +48,25 @@
     </div>
   </div>
 </template>
+
+<template name="loginErrorModal">
+  <div class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header modal-primary">
+          <h4 class="modal-title">{{error}}</h4>
+        </div>
+
+        <div class="modal-body">
+          <p>{{errReason}}</p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</template>

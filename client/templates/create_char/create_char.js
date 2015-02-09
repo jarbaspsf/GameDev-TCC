@@ -14,9 +14,13 @@ Template.createChar.events({
       return;
     }
 
-    Meteor.call("createChar", Session.get("charClass"), charName, function(err){
+    Meteor.call("createChar", Session.get("charClass"), charName, function(err, result){
       if(err){
-        Alert("Something had gone bad!")
+        var data = {
+          errReason: err.reason,
+          error: "Character Creation Error"
+        }
+        Modal.show('loginErrorModal', data);
       }else{
         Router.go("/main");
       }

@@ -1,1 +1,8 @@
+.modal-primary {
+  background-color: #337AB7 !important;
+}
 
+.modal-title {
+  color: white !important;
+  font-weight: bold !important;
+}

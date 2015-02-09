@@ -13,6 +13,9 @@ Meteor.methods({
 });
 
 function createChar(charClass, charName){
+  if(checkSameCharName(charName)){
+    throw new Meteor.Error( 500, 'The following character name already exists: '+charName);
+  }
 
   stats = getInitialStatus(charClass);
 
@@ -418,7 +421,11 @@ CHAR_HELPERS = {
   }
 }
 
-
+function checkSameCharName(charName){
+  return Meteor.users.findOne({"profile.charName" : {
+    $regex : new RegExp(charName, "i") }
+  });
+}
 
 
 

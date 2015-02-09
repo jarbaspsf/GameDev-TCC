@@ -11,7 +11,11 @@ Template.login.events({
 
     Meteor.loginWithPassword(user.username, user.password, function(err){
       if(err){
-        alert("LOL");
+        var data = {
+          errReason: err.reason,
+          error: "Login Error"
+        }
+        Modal.show('loginErrorModal', data);
       }else{
         if(Meteor.user().profile.firstLogin)
           Router.go("/newAcc");
@@ -41,7 +45,11 @@ Template.login.events({
 
     Accounts.createUser(user, function(err){
       if(err){
-
+        var data = {
+          errReason: err.reason,
+          error: "Create Account Error"
+        }
+        Modal.show('loginErrorModal', data);
       }else{
         Router.go("/newAcc");
       }
