@@ -1,9 +1,3 @@
-Meteor.publish('battleLogs', function(limit) {
-  //default limit if none set
-  var dl = limit || 1;
-  return BattleLogs.find({});
-});
-
 Meteor.publish('challenges', function(limit) {
   return Challenges.find();
 });

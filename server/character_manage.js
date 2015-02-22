@@ -45,7 +45,7 @@ function createChar(charClass, charName){
         trainingTime: 0,
         skp: 1,
         skills: initialSkills,
-        inventory: [],
+        inventory: [Items.findOne({name: "Bread"}),Items.findOne({name: "Wine"}),Items.findOne({name: "Stone of Virtue of Courage"})],
         inventorySkills: [],
         activeEquipment: {
           head: stats.head,
@@ -69,6 +69,18 @@ function createChar(charClass, charName){
           },
 
           inteligenceBuff: {
+            active: false,
+            tick: 0,
+            qty: 0
+          },
+
+          defenseBuff: {
+            active: false,
+            tick: 0,
+            qty: 0
+          },
+
+          constitutionBuff: {
             active: false,
             tick: 0,
             qty: 0
@@ -278,14 +290,11 @@ function unsetSkill(skillId){
 function destroyItems(itemId){
   var inventory = Meteor.user().profile.inventory;
   var index = -1;
-  console.log(itemId);
   inventory.forEach(function(item, i){
     if(item._id == itemId){
       index = i
     }
   });
-
-  console.log(index);
 
   if(index == -1)
     return;
@@ -387,21 +396,7 @@ CHAR_HELPERS = {
       $set : query
     });
 
-    if(Meteor.user().profile.currentHP > Meteor.user().profile.totalMaxHP){
-      Meteor.users.update(Meteor.userId(), {
-        $set: {
-          "profile.currentHP": Meteor.user().profile.totalMaxHP
-        }
-      });
-    }
-
-    if(Meteor.user().profile.currentMana > Meteor.user().profile.totalMaxMana){
-      Meteor.users.update(Meteor.userId(), {
-        $set: {
-          "profile.currentMana": Meteor.user().profile.totalMaxMana
-        }
-      });
-    }
+    this.checkMaxAttrs();
   },
 
   resetCharEquipSlot: function(slotName){
@@ -418,6 +413,24 @@ CHAR_HELPERS = {
     Meteor.users.update(Meteor.userId(), {
       $set: query
     });
+  },
+
+  checkMaxAttrs: function(){
+    if(Meteor.user().profile.currentHP > Meteor.user().profile.totalMaxHP){
+      Meteor.users.update(Meteor.userId(), {
+        $set: {
+          "profile.currentHP": Meteor.user().profile.totalMaxHP
+        }
+      });
+    }
+
+    if(Meteor.user().profile.currentMana > Meteor.user().profile.totalMaxMana){
+      Meteor.users.update(Meteor.userId(), {
+        $set: {
+          "profile.currentMana": Meteor.user().profile.totalMaxMana
+        }
+      });
+    }
   }
 }
 

@@ -1,3 +1,5 @@
+var virtueOfCourageSkillId;
+
 if(!Challenges.find().count()){
 
   var challenge = {
@@ -162,7 +164,7 @@ if(!Skills.find().count()){
 
   var skill = {
     name: "Power Strike",
-    description: "Attacks the enemy with a powerfull strike",
+    description: "Attacks the enemy with a powerfull strike, does 60% more damage",
     dmgMod: 1.6,
     manaCost: 8,
     stats: 'str',
@@ -170,10 +172,35 @@ if(!Skills.find().count()){
     target: 'enemy',
     iconPath: '/skills/knight/powerStrike.png',
     reqLvl: 1,
-    class: "Knight"
+    class: "Knight",
+    buff: null,
+    debuff: null
   }
 
   Skills.insert(skill);
+
+  var skill = {
+    name: "Virtue of Courage",
+    description: "Gather Courage to stand attacks, Increase your defese by 50% for 3 attacks",
+    dmgMod: null,
+    manaCost: 15,
+    stats: null,
+    type: 'buff',
+    target: 'self',
+    iconPath: '/skills/knight/virtueOfCourage.png',
+    reqLvl: 5,
+    class: "Knight",
+    buff: {
+      buffType: "defenseBuff",
+      tick: 3,
+      type: 'percentage',
+      qty: 50,
+      stats: 'def'
+    },
+    debuff: null
+  }
+
+  virtueOfCourageSkillId = Skills.insert(skill);
 
   var skill = {
     name: "Fireball",
@@ -185,7 +212,9 @@ if(!Skills.find().count()){
     target: 'enemy',
     iconPath: '/skills/mage/fireball.png',
     reqLvl: 1,
-    class: "Mage"
+    class: "Mage",
+    buff: null,
+    debuff: null
   }
 
   Skills.insert(skill);
@@ -200,10 +229,14 @@ if(!Skills.find().count()){
     target: 'enemy',
     iconPath: '/skills/rogue/backstab.png',
     reqLvl: 1,
-    class: "Rogue"
+    class: "Rogue",
+    buff: null,
+    debuff: null
   }
 
   Skills.insert(skill);
+
+
 }
 
 if(!Items.find().count()){
@@ -554,12 +587,16 @@ if(!Items.find().count()){
 
   var item = {
     name: "Bread",
-    description: "A tasteful bread",
-    bonus: {
-      def: 1
+    description: "A tasteful bread, Recovers HP by 5",
+    action: {
+      buff: false,
+      increase: {
+        stats: "currentHP",
+        qty: 5
+      }
     },
     slot: null,
-    iconPath: '/items/food/bread.png',
+    iconPath: '/items/consumable/food/bread.png',
     reqLvl: 1,
     class: false,
     equipment: false,
@@ -572,16 +609,58 @@ if(!Items.find().count()){
 
   var item = {
     name: "Wine",
-    description: "A tasteful wine",
-    bonus: {
-      def: 1
+    description: "A tasteful wine, Recovers Mana by 5",
+    action: {
+      buff: false,
+      increase: {
+        stats: "currentMana",
+        qty: 5
+      }
     },
     slot: null,
-    iconPath: '/items/food/wine.png',
+    iconPath: '/items/consumable/food/wine.png',
     reqLvl: 1,
-    class: "Knight",
-    equipment: true,
+    class: false,
+    equipment: false,
+    consumable: true,
+    skillItem: false,
     tier: 1
+  }
+
+  var item = {
+    name: "Wine",
+    description: "A tasteful wine, Recovers Mana by 5",
+    action: {
+      buff: false,
+      increase: {
+        stats: "currentMana",
+        qty: 5
+      }
+    },
+    slot: null,
+    iconPath: '/items/consumable/food/wine.png',
+    reqLvl: 1,
+    class: false,
+    equipment: false,
+    consumable: true,
+    skillItem: false,
+    tier: 1
+  }
+
+  Items.insert(item);
+
+  var item = {
+    name: "Stone of Virtue of Courage",
+    description: "Use to Learn the Knight skill: Virtue of Courage. Requires LVL 5",
+    action: null,
+    slot: null,
+    iconPath: '/skills/knight/virtueOfCourage.png',
+    reqLvl: 2,
+    class: "Knight",
+    equipment: false,
+    consumable: true,
+    skillItem: virtueOfCourageSkillId,
+    tier: 2
   }
 
   Items.insert(item);

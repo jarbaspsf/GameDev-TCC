@@ -17,8 +17,8 @@ Template.createChar.events({
     Meteor.call("createChar", Session.get("charClass"), charName, function(err, result){
       if(err){
         var data = {
-          errReason: err.reason,
-          error: "Character Creation Error"
+          message: err.reason,
+          tittle: "Character Creation Error"
         }
         Modal.show('simpleModal', data);
       }else{

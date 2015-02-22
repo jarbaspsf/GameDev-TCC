@@ -12,8 +12,8 @@ Template.login.events({
     Meteor.loginWithPassword(user.username, user.password, function(err){
       if(err){
         var data = {
-          errReason: err.reason,
-          error: "Login Error"
+          message: err.reason,
+          tittle: "Login Error"
         }
         Modal.show('simpleModal', data);
       }else{
@@ -34,11 +34,6 @@ Template.login.events({
         password: $(event.target).find("[name=password]").val(),
         profile: {
           fullName: $(event.target).find("[name=fullName]").val(),
-          maxHP: 0,
-          str: 0,
-          defense: 0,
-          speed: 0,
-          sta: 0,
           firstLogin: true
         }
     };
@@ -46,8 +41,8 @@ Template.login.events({
     Accounts.createUser(user, function(err){
       if(err){
         var data = {
-          errReason: err.reason,
-          error: "Create Account Error"
+          message: err.reason,
+          tittle: "Create Account Error"
         }
         Modal.show('simpleModal', data);
       }else{

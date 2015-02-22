@@ -59,6 +59,21 @@ Template.equipmentandItems.events({
       });
     }else if($(event.target).text() == 'Use'){
       Meteor.call("useItem", Session.get("itemId"), function(err, result){
+        if(err){
+          var data = {
+            message: err.reason,
+            tittle: "Use Item Error"
+          }
+          Modal.show('simpleModal', data);
+        }else{
+          if(result.tittle){
+            var data = {
+              message: result.message,
+              tittle: result.tittle
+            }
+            Modal.show('simpleModal', data);
+          }
+        }
         resetButtons();
       });
     }else{

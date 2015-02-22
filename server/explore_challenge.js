@@ -118,6 +118,7 @@ function initBattleLog(enemyId){
     }
   });
 
+  BATTLE_HELPER.resetCharBuffs();
   BATTLE_HELPER.resetCharATB();
   BattleLogs.insert(battleLog);
   return battleRegId;
@@ -156,7 +157,7 @@ function updateBattleLog(actionUser, type, skillId, enemyId, pvp, battleRegId){
 
 
   //normal atk
-  if(skill){
+  if(skill && skill.type == "dmg"){
     var userStats;
     if(skill.stats == 'str')
       userStats = Meteor.user().profile.totalStr;
@@ -165,6 +166,10 @@ function updateBattleLog(actionUser, type, skillId, enemyId, pvp, battleRegId){
 
     damage = parseInt(((userStats * skill.dmgMod) * Math.floor((Math.random() * 2) + 1)).toFixed());
     usesSkill = true;
+    updateMana(skill.manaCost);
+  }else if(skill && skill.type == "buff"){
+    usesSkill = true;
+    BATTLE_HELPER.manageCharBuff(skill);
     updateMana(skill.manaCost);
   }else if(type != 'enemy'){
     var weapon = Meteor.user().profile.activeEquipment.MH;
@@ -177,7 +182,11 @@ function updateBattleLog(actionUser, type, skillId, enemyId, pvp, battleRegId){
     damage = parseInt(damage - Math.floor((enemy.def * 1.2) / 2).toFixed());
   }else{
     damage = parseInt(((enemy.str * 1.2) * Math.floor((Math.random() * 2) + 1)).toFixed());
-    damage = parseInt(damage - Math.floor((Meteor.user().profile.totalDef * 1.1) / 2).toFixed());
+    var defBuff = Meteor.user().profile.buffs.defenseBuff.active ? Meteor.user().profile.buffs.defenseBuff.qty : 0;
+    damage = parseInt(damage - Math.floor(((Meteor.user().profile.totalDef + defBuff)* 1.1) / 2).toFixed());
+    if(defBuff > 0){
+      BATTLE_HELPER.decreaseBuffTick("defenseBuff");
+    }
   }
 
   if(damage < 0)
@@ -189,6 +198,8 @@ function updateBattleLog(actionUser, type, skillId, enemyId, pvp, battleRegId){
     log = actionUser + " uses "+ skill.name +" and heals for: "+ damage + " HP";
   }else if(usesSkill && skill.type == 'dmg'){
     log = actionUser + " uses "+ skill.name +" and hits for: "+ damage + " HP";
+  }else if(usesSkill && skill.type == 'buff'){
+    log = actionUser + " uses "+ skill.name;
   }else{
     log = actionUser + " attacks and hits for: "+ damage + " HP";
   }
@@ -289,15 +300,86 @@ BATTLE_HELPER = {
         "date": newDate
       }
     });
+  },
+
+  manageCharBuff: function(skill){
+    console.log("buffando 2")
+    var qty = 0;
+    var query = {};
+    var capitilized = skill.buff.stats.charAt(0).toUpperCase() + skill.buff.stats.slice(1)
+    if(skill.buff.type == 'percentage'){
+      var factor = parseFloat((skill.buff.qty / 100).toFixed(2));
+      console.log(factor);
+      qty = Meteor.user().profile["total"+capitilized] * factor;
+      console.log(qty);
+    }else{
+      qty = skill.buff.qty
+    }
+
+    query["profile.buffs."+skill.buff.buffType] = {
+      active: true,
+      tick: skill.buff.tick,
+      qty: qty
+    }
+
+    console.log(query);
+
+    Meteor.users.update(Meteor.userId(), {
+      $set: query
+    })
+
+    return qty;
+  },
+
+  resetCharBuffs: function(){
+
+    var resetBuff = {
+      active: false,
+      tick: 0,
+      qty: 0
+    }
+
+    Meteor.users.update(Meteor.userId(), {
+      $set: {
+        "profile.buffs.speedBuff": resetBuff,
+        "profile.buffs.strengthBuff": resetBuff,
+        "profile.buffs.inteligenceBuff": resetBuff,
+        "profile.buffs.defenseBuff": resetBuff,
+        "profile.buffs.constitutionBuff":resetBuff
+      }
+    });
+  },
+
+  decreaseBuffTick: function(buffType){
+    buff = Meteor.user().profile.buffs[buffType];
+    if(!buff.active)
+      return;
+
+    var query = {};
+
+    if(buff.tick <= 1){
+      var resetBuff = {
+        active: false,
+        tick: 0,
+        qty: 0
+      }
+      query["profile.buffs."+buffType] = resetBuff;
+      Meteor.users.update(Meteor.userId(), {
+        $set : query
+      });
+    }else{
+      query["profile.buffs."+buffType+".tick"] = -1;
+      Meteor.users.update(Meteor.userId(), {
+        $inc : query
+      });
+    }
+
   }
+
 }
 
 function getBossBattleLogs(enemyId){
-  bl = BattleLogs.find({
-    enemyId: enemyId,
-    damage: {$gt: 0}
-  }).fetch();
-  console.log(bl);
+  console.log(BattleLogsAggr.find().fetch());
 }
 
 function updateCharDmg(damage){
