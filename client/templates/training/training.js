@@ -1,6 +1,6 @@
 TRAINING_GLOBAL = null;
 
-Template.training.rendered = function(){
+Template.trainning.rendered = function(){
   if(!Meteor.user().profile.inTraining){
     $("#in-training").hide();
   }else{
@@ -12,12 +12,12 @@ Template.training.rendered = function(){
 
 }
 
-Template.training.destroyed = function(){
+Template.trainning.destroyed = function(){
   clearInterval(TRAINING_GLOBAL);
 }
 
 
-Template.training.helpers({
+Template.trainning.helpers({
   stats: function(){
       stats = {
         maxHP: Meteor.user().profile.maxHP,
@@ -33,7 +33,7 @@ Template.training.helpers({
   }
 })
 
-Template.training.events({
+Template.trainning.events({
   'click .trainingButton' : function(event){
     event.preventDefault();
     $("#select-training").hide();

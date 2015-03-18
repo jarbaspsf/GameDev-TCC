@@ -1,5 +1,5 @@
 Template.mainMenu.rendered = function(){
-  Session.set('currentTemplate', "wellcome");
+  Session.set('currentTemplate', "Welcome");
   initialize();
 }
 

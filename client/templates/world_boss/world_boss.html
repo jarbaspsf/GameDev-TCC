@@ -1,5 +1,5 @@
 <template name='worldBoss'>
-  <h4 class='header-center'>Wellcome to the Arena</h4>
+  <h4 class='header-center'>Welcome to the Arena</h4>
   <h5 class='header-center'>Ready to lose?</h5>
   <table class='table'>
     <thead>
@@ -13,12 +13,11 @@
     <tbody>
       {{#each worldBosses}}
       <tr>
-        <td>{{_id}}</td>
+        <td>{{name}}</td>
         <td>{{currentHP}}</td>
         <td id="{{_id}}">{{#if loading}}{{>spinner}}{{/if}}</td>
         <td>
           <button class='btn btn-danger btn-challenge {{_id}}' disabled>Challenge!</button>
-          <button class='btn btn-primary'>Top Damage</button>
         </td>
       </tr>
       {{/each}}
