@@ -1,6 +1,21 @@
 Template.mainMenu.rendered = function(){
   Session.set('currentTemplate', "welcome");
   initialize();
+
+  if(!isPlaying()){
+    AUDIO_BACK = new Audio("HallsOfDespair.mp3");
+    AUDIO_BACK.addEventListener('ended', function() {
+      this.currentTime = 0;
+      this.play();
+    }, false);
+    AUDIO_BACK.play();
+  }
+}
+
+Template.mainMenu.destroyed = function(){
+  AUDIO_BACK.pause();
+  AUDIO_BACK.currentTime = 0;
+  AUDIO_BACK = null;
 }
 
 function initialize(){
@@ -42,3 +57,9 @@ Template.mainMenu.events({
 
 
 })
+
+function isPlaying(){
+  if(AUDIO_BACK)
+    return !AUDIO_BACK.paused;
+  return false;
+}

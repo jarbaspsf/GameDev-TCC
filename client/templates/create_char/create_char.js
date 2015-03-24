@@ -1,3 +1,16 @@
+AUDIO_BACK = null;
+
+
+Template.createChar.rendered = function(){
+  AUDIO_BACK = new Audio("HallsOfDespair.mp3");
+  AUDIO_BACK.addEventListener('ended', function() {
+    this.currentTime = 0;
+    this.play();
+  }, false);
+  AUDIO_BACK.play();
+}
+
+
 Template.createChar.events({
   'submit #createCharForm': function(event){
     event.preventDefault();
