@@ -174,7 +174,8 @@ if(!Skills.find().count()){
     reqLvl: 1,
     class: "Knight",
     buff: null,
-    debuff: null
+    debuff: null,
+    sound: "cross.wav"
   }
 
   Skills.insert(skill);
@@ -197,7 +198,8 @@ if(!Skills.find().count()){
       qty: 50,
       stats: 'def'
     },
-    debuff: null
+    debuff: null,
+    sound: "limit.wav"
   }
 
   virtueOfCourageSkillId = Skills.insert(skill);
@@ -214,7 +216,8 @@ if(!Skills.find().count()){
     reqLvl: 1,
     class: "Mage",
     buff: null,
-    debuff: null
+    debuff: null,
+    sound: "beatrush.wav"
   }
 
   Skills.insert(skill);
@@ -231,7 +234,8 @@ if(!Skills.find().count()){
     reqLvl: 1,
     class: "Rogue",
     buff: null,
-    debuff: null
+    debuff: null,
+    sound: "sickle.wav"
   }
 
   Skills.insert(skill);

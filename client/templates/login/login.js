@@ -59,3 +59,11 @@ Template.login.events({
       Router.go("/main");
   }
 });
+
+Template.simpleModal.events({
+  'click button': function(event){
+    if(Session.equals("currentTemplate", "exploreChallenge")){
+      Session.set("currentTemplate", "explore");
+    }
+  }
+})

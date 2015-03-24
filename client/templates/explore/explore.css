@@ -2,3 +2,7 @@
   width: 200px;
   height: 200px;
 }
+
+.thumbnail-enemy:hover{
+  box-shadow: 0 0 10px 0px rgba(221, 31, 31, 1);
+}

@@ -5,3 +5,27 @@
 .header-center{
   text-align: center
 }
+
+.panel-kina:hover{
+  box-shadow: 0px 0px 10px 10px rgba(242, 222, 222, 1);
+}
+
+.panel-mage:hover{
+  box-shadow: 0px 0px 10px 10px rgba(217, 237, 247, 1);
+}
+
+.panel-ladino:hover{
+  box-shadow: 0px 0px 10px 10px rgba(252, 248, 227, 1);
+}
+
+.panel-kina.hover{
+  box-shadow: 0px 0px 10px 10px rgba(242, 222, 222, 1);
+}
+
+.panel-mage.hover{
+  box-shadow: 0px 0px 10px 10px rgba(217, 237, 247, 1);
+}
+
+.panel-ladino.hover{
+  box-shadow: 0px 0px 10px 10px rgba(252, 248, 227, 1);
+}

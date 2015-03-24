@@ -31,6 +31,8 @@ Template.createChar.events({
     event.preventDefault();
     $(".classChoice").removeClass("active");
     $(event.target).addClass("active");
+    $(".panel").removeClass("hover");
+    $(event.target).parent().parent().addClass("hover");
     Session.set("charClass", $(event.target).text().split(" ").reverse()[0]);
   }
 });
