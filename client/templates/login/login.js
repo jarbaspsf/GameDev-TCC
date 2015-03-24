@@ -17,10 +17,14 @@ Template.login.events({
         }
         Modal.show('simpleModal', data);
       }else{
-        if(Meteor.user().profile.firstLogin)
-          Router.go("/newAcc");
-        else
-          Router.go("/main");
+        Meteor.logoutOtherClients(function(err, res){
+          if(!err){
+            if(Meteor.user().profile.firstLogin)
+              Router.go("/newAcc");
+            else
+              Router.go("/main");
+          }
+        });
       }
     })
 
