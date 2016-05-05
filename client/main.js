@@ -1,4 +1,3 @@
-;
 Meteor.subscribe('challenges');
 Meteor.subscribe('PVPRooms');
 Meteor.subscribe('skills');
